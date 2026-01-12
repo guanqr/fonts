@@ -1,0 +1,33 @@
+# Node.js
+node_modules/
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Downloaded fonts (temporary)
+downloads/
+
+# Python virtual environment for scripts
+.venv-scripts/
+
+# Python bytecode cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Build outputs
+build/
+dist/
+
+# Version cache (auto-generated)
+.version-cache.json
+
+# Operating System
+.DS_Store
+
+# IDE
+.idea/
+*.swp
+*.swo

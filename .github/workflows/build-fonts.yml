@@ -1,0 +1,170 @@
+name: Build and Deploy Fonts
+
+on:
+  workflow_dispatch:
+    inputs:
+      updated-fonts:
+        description: 'Comma-separated list of fonts to update'
+        required: false
+        default: 'all'
+        type: string
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'scripts/**/*.py'
+      - '.github/workflows/build-fonts.yml'
+
+jobs:
+  build-fonts:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Install Node.js dependencies
+        run: pnpm install
+
+      - name: Build fonts using CLI
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+        run: |
+          echo "🔄 Starting font build workflow..."
+          UPDATED_FONTS="${{ github.event.inputs.updated-fonts || 'all' }}"
+          echo "📋 Updated fonts parameter: '$UPDATED_FONTS'"
+          
+          # Build TypeScript first
+          pnpm run build
+          
+          if [ "$UPDATED_FONTS" = "all" ] || [ -z "$UPDATED_FONTS" ]; then
+            echo "🎯 Building all fonts (full build)..."
+            pnpm run cli:build
+          else
+            echo "🎯 Building specific fonts: $UPDATED_FONTS"
+            # Convert comma-separated list to space-separated for CLI
+            FONT_IDS=$(echo "$UPDATED_FONTS" | tr ',' ' ')
+            echo "🎯 Converted to CLI format: '$FONT_IDS'"
+            pnpm run cli:build --fonts $FONT_IDS
+          fi
+          echo "✅ Font build completed"
+      
+      - name: Verify build output
+        run: |
+          echo "🔍 Checking build output..."
+          if [ -d "build" ]; then
+            echo "✅ Build directory exists"
+            echo "📁 Build directory contents:"
+            find build -type f | head -20
+          else
+            echo "❌ Build directory not found"
+            echo "📁 Current directory contents:"
+            ls -la
+          fi
+      
+      - name: Create build metadata
+        run: |
+          echo "📋 Creating build metadata..."
+          mkdir -p build
+          
+          # Create basic directory structure if it doesn't exist
+          mkdir -p build/fonts
+          mkdir -p build/css
+          
+          UPDATED_FONTS="${{ github.event.inputs.updated-fonts || 'all' }}"
+          if [ "$UPDATED_FONTS" = "all" ] || [ -z "$UPDATED_FONTS" ]; then
+            BUILD_TYPE="full"
+            PROCESSED_FONTS="all"
+          else
+            BUILD_TYPE="selective"
+            PROCESSED_FONTS="$UPDATED_FONTS"
+          fi
+          
+          # Export fonts config from TypeScript to JSON
+          node -e "
+            import('./dist/config/fonts/index.js').then(config => {
+              console.log(JSON.stringify(config.allFonts, null, 2));
+            }).catch(err => {
+              console.error('Error loading fonts config:', err);
+              process.exit(1);
+            });
+          " > fonts-config.json
+          
+          cat > build/metadata.json << EOF
+          {
+            "buildDate": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "buildId": "${{ github.run_id }}",
+            "commit": "${{ github.sha }}",
+            "buildType": "$BUILD_TYPE",
+            "updatedFonts": "$UPDATED_FONTS",
+            "processedFonts": "$PROCESSED_FONTS",
+            "fonts": $(cat fonts-config.json)
+          }
+          EOF
+          
+          # Clean up temporary file
+          rm fonts-config.json
+          
+          echo "✅ Build metadata created (type: $BUILD_TYPE)"
+      
+      - name: Get current date
+        id: date
+        run: echo "date=$(date -u +%Y-%m-%d)" >> $GITHUB_OUTPUT
+      
+      - name: Incremental deploy to build branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.PERSONAL_TOKEN }}
+          publish_dir: ./build
+          publish_branch: build
+          keep_files: true # Preserve existing files in the build branch
+          commit_message: |
+            🔄 Font build ${{ github.run_id }} - ${{ steps.date.outputs.date }}
+            
+            Build type: ${{ github.event.inputs.updated-fonts == 'all' || github.event.inputs.updated-fonts == '' && 'Full build (all fonts)' || format('Selective build: {0}', github.event.inputs.updated-fonts) }}
+            Source commit: ${{ github.sha }}
+            Triggered by: ${{ github.event_name }}
+      
+      - name: Summary
+        run: |
+          echo "✅ Font build and deployment complete!"
+          echo "📊 Build Summary:"
+          echo "- Build ID: ${{ github.run_id }}"
+          UPDATED_FONTS="${{ github.event.inputs.updated-fonts || 'all' }}"
+          if [ "$UPDATED_FONTS" = "all" ] || [ -z "$UPDATED_FONTS" ]; then
+            echo "- Build type: Full build (all fonts)"
+          else
+            echo "- Build type: Selective build"
+            echo "- Updated fonts: $UPDATED_FONTS"
+          fi
+          echo "- Build date: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "- Deployed to: build branch"
+          
+          if [ -f build/metadata.json ]; then
+            echo "📋 Metadata:"
+            cat build/metadata.json | jq '.'
+          fi
+          
+          if [ -d build/fonts ]; then
+            echo "📦 Generated font files:"
+            ls -la build/fonts/
+          fi
+          
+          if [ -d build/css ]; then
+            echo "🎨 Generated CSS files:"
+            ls -la build/css/
+          fi

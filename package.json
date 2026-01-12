@@ -1,0 +1,79 @@
+{
+  "name": "fonts",
+  "version": "5.0.0",
+  "description": "Automated web font subsetting workflow with chunked loading for optimal performance.",
+  "main": "dist/index.js",
+  "bin": {
+    "fonts": "dist/cli/bin.js"
+  },
+  "type": "module",
+  "scripts": {
+    "// Development": "",
+    "dev": "tsx watch src/index.ts",
+    "start:dev": "tsx src/index.ts",
+    "// Build": "",
+    "build": "tsc && tsc-alias",
+    "type-check": "tsc --noEmit",
+    "// Production execution": "",
+    "start": "pnpm run exec:start",
+    "start:force": "pnpm run exec:start --force",
+    "build:fonts": "pnpm run exec:start --build-only",
+    "build:specific": "pnpm run exec:start --fonts",
+    "// Base helpers": "",
+    "exec:start": "pnpm run build && node dist/index.js",
+    "exec:cli": "node dist/cli/bin.js",
+    "// CLI commands": "",
+    "cli": "pnpm run exec:cli",
+    "cli:help": "pnpm run exec:cli --help",
+    "cli:version": "pnpm run exec:cli --version",
+    "cli:build": "pnpm run exec:cli build",
+    "cli:check": "pnpm run exec:cli check",
+    "cli:download": "pnpm run exec:cli download",
+    "cli:edit": "pnpm run exec:cli edit",
+    "cli:subset": "pnpm run exec:cli subset",
+    "cli:css": "pnpm run exec:cli css",
+    "cli:docs": "pnpm run exec:cli docs",
+    "cli:clean": "pnpm run exec:cli clean",
+    "// Clean shortcuts": "",
+    "clean": "pnpm run cli:clean --all",
+    "clean:build": "pnpm run cli:clean --build",
+    "clean:deps": "pnpm run cli:clean --deps",
+    "clean:cache": "pnpm run cli:clean --cache",
+    "// Linting": "",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "keywords": [
+    "fonts",
+    "subsetting",
+    "web-fonts",
+    "automation",
+    "github-actions"
+  ],
+  "author": "reuixiy",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^22.0.1",
+    "chalk": "^5.6.2",
+    "cn-font-split": "^7.3.0",
+    "fs-extra": "^11.3.2",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.49.0",
+    "@typescript-eslint/parser": "^8.49.0",
+    "cssnano": "^7.1.2",
+    "eslint": "^9.39.1",
+    "postcss": "^8.5.6",
+    "tsc-alias": "^1.8.16",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

@@ -1,0 +1,102 @@
+name: Weekly Font Version Check
+
+on:
+  schedule:
+    # Run weekly on Mondays at 16:00 UTC
+    - cron: '0 16 * * 1'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  check-versions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    outputs:
+      has-updates: ${{ steps.version-check.outputs.has-updates }}
+      updated-fonts: ${{ steps.version-check.outputs.updated-fonts }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+      
+      - name: Install dependencies
+        run: pnpm install
+      
+      - name: Check font versions
+        id: version-check
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+        run: |
+          # Build TypeScript first
+          pnpm run build
+          # Run version check using CLI
+          pnpm run cli:check
+      
+      - name: Update version cache
+        if: steps.version-check.outputs.has-updates == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+        run: |
+          # Commit version cache to a dedicated cache branch for persistence
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          
+          # Create/checkout orphan cache branch (clean branch with only cache file)
+          git fetch origin cache || true
+          git checkout cache 2>/dev/null || git checkout --orphan cache
+          git pull origin cache || true
+          
+          # Clear everything except our cache file
+          git rm -rf . 2>/dev/null || true
+          
+          # Copy the updated cache file
+          cp .version-cache.json version-cache.json
+          
+          # Commit and push the single cache file
+          git add version-cache.json
+          if git diff --staged --quiet; then
+            echo "No cache changes to commit"
+          else
+            git commit -m "Update font version cache - $(date)"
+            git push origin cache
+            echo "✅ Version cache committed to cache branch"
+          fi
+
+  trigger-build:
+    needs: check-versions
+    if: needs.check-versions.outputs.has-updates == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    
+    steps:
+      - name: Trigger font build workflow
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PERSONAL_TOKEN }}
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'build-fonts.yml',
+              ref: 'main',
+              inputs: {
+                'updated-fonts': '${{ needs.check-versions.outputs.updated-fonts }}'
+              }
+            });
+      
+      - name: Notify build triggered
+        run: |
+          echo "✅ Font build workflow triggered for fonts: ${{ needs.check-versions.outputs.updated-fonts }}"
