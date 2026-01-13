@@ -1,7 +1,7 @@
 {
-  "buildDate": "2026-01-13T12:07:39Z",
-  "buildId": "20956106520",
-  "commit": "9a7ca954a1c4fd833a22ac0e152b4c15b163da0b",
+  "buildDate": "2026-01-13T12:26:01Z",
+  "buildId": "20956633792",
+  "commit": "418a75a937f5fcbb915f84640e08ff65a335cd72",
   "buildType": "full",
   "updatedFonts": "all",
   "processedFonts": "all",
@@ -59,7 +59,7 @@
       "type": "github-repo",
       "owner": "JetBrains",
       "repo": "JetBrainsMono",
-      "filePattern": "JetBrainsMono-Regular.ttf",
+      "filePattern": "fonts/ttf/JetBrainsMono-Regular.ttf",
       "url": "https://github.com/JetBrains/JetBrainsMono"
     },
     "license": {
