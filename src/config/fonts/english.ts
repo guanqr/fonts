@@ -20,6 +20,9 @@ export const englishFonts: Record<string, FontConfig> = {
       repo: 'JetBrainsMono',
       filePattern: 'JetBrainsMono-Regular.ttf',
       url: 'https://github.com/JetBrains/JetBrainsMono',
+      files: {
+        path: 'fonts/ttf/JetBrainsMono-Regular.ttf',
+      },
     },
     license: {
       type: 'SIL Open Font License 1.1',
