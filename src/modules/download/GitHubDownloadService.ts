@@ -126,7 +126,8 @@ export class GitHubDownloadService extends BaseService {
           /%2F/g,
           '/'
         );
-        const downloadUrl = `https://raw.githubusercontent.com/${source.owner}/${source.repo}/main/${encodedPath}`;
+        //const downloadUrl = `https://raw.githubusercontent.com/${source.owner}/${source.repo}/main/${encodedPath}`;
+        const downloadUrl = `https://raw.githubusercontent.com/${source.owner}/${source.repo}/${encodedPath}`;
 
         this.log(`Downloading: ${fileName}`, 'debug');
         this.log(`URL: ${downloadUrl}`, 'debug');

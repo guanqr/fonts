@@ -12,11 +12,11 @@ export const variableFonts: Record<string, FontConfig> = {
       url: 'https://github.com/googlefonts/amstelvar',
       files: [
         {
-          path: 'fonts/Amstelvar-Roman[GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,wdth,wght,opsz].ttf',
+          path: 'main/fonts/Amstelvar-Roman[GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,wdth,wght,opsz].ttf',
           style: 'roman',
         },
         {
-          path: 'fonts/Amstelvar-Italic[GRAD,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,wdth,wght,opsz].ttf',
+          path: 'main/fonts/Amstelvar-Italic[GRAD,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,wdth,wght,opsz].ttf',
           style: 'italic',
         },
       ],

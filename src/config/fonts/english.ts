@@ -18,8 +18,14 @@ export const englishFonts: Record<string, FontConfig> = {
       type: 'github-repo',
       owner: 'JetBrains',
       repo: 'JetBrainsMono',
-      filePattern: 'fonts/ttf/JetBrainsMono-Regular.ttf',
+      //filePattern: 'JetBrainsMono-Regular.ttf',
       url: 'https://github.com/JetBrains/JetBrainsMono',
+      files: [
+        {
+          path: 'master/fonts/ttf/JetBrainsMono-Regular.ttf',
+          style: 'normal',
+        },
+      ],
     },
     license: {
       type: 'SIL Open Font License 1.1',
