@@ -1,7 +1,7 @@
 {
-  "buildDate": "2026-01-13T12:26:01Z",
-  "buildId": "20956633792",
-  "commit": "418a75a937f5fcbb915f84640e08ff65a335cd72",
+  "buildDate": "2026-01-13T12:49:29Z",
+  "buildId": "20957307976",
+  "commit": "9aae0d301cb886c9c812845273928e0dea70fe8e",
   "buildType": "full",
   "updatedFonts": "all",
   "processedFonts": "all",
@@ -59,8 +59,13 @@
       "type": "github-repo",
       "owner": "JetBrains",
       "repo": "JetBrainsMono",
-      "filePattern": "fonts/ttf/JetBrainsMono-Regular.ttf",
-      "url": "https://github.com/JetBrains/JetBrainsMono"
+      "url": "https://github.com/JetBrains/JetBrainsMono",
+      "files": [
+        {
+          "path": "master/fonts/ttf/JetBrainsMono-Regular.ttf",
+          "style": "normal"
+        }
+      ]
     },
     "license": {
       "type": "SIL Open Font License 1.1",
@@ -85,11 +90,11 @@
       "url": "https://github.com/googlefonts/amstelvar",
       "files": [
         {
-          "path": "fonts/Amstelvar-Roman[GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,wdth,wght,opsz].ttf",
+          "path": "main/fonts/Amstelvar-Roman[GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,wdth,wght,opsz].ttf",
           "style": "roman"
         },
         {
-          "path": "fonts/Amstelvar-Italic[GRAD,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,wdth,wght,opsz].ttf",
+          "path": "main/fonts/Amstelvar-Italic[GRAD,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,wdth,wght,opsz].ttf",
           "style": "italic"
         }
       ]
