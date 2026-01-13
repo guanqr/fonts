@@ -30,16 +30,16 @@ Automated web font subsetting workflow with chunked loading for optimal performa
 
 ### CDN
 
-[![](https://data.jsdelivr.com/v1/package/gh/reuixiy/fonts/badge)](https://www.jsdelivr.com/package/gh/reuixiy/fonts) [![](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdata.jsdelivr.com%2Fv1%2Fstats%2Fpackages%2Fgh%2Freuixiy%2Ffonts%40build%2Ffiles&query=%24%5B0%5D%5B'hits'%5D%5B'total'%5D&suffix=%20hits%2Fmonth&style=flat-square&label=fonts.min.css&labelColor=555&color=ff5627)](https://data.jsdelivr.com/v1/stats/packages/gh/reuixiy/fonts@build/files)
+[![](https://data.jsdelivr.com/v1/package/gh/guanqr/fonts/badge)](https://www.jsdelivr.com/package/gh/guanqr/fonts) [![](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdata.jsdelivr.com%2Fv1%2Fstats%2Fpackages%2Fgh%2Fguanqr%2Ffonts%40build%2Ffiles&query=%24%5B0%5D%5B'hits'%5D%5B'total'%5D&suffix=%20hits%2Fmonth&style=flat-square&label=fonts.min.css&labelColor=555&color=ff5627)](https://data.jsdelivr.com/v1/stats/packages/gh/guanqr/fonts@build/files)
 
 ```html
 <!-- All fonts -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/fonts.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/fonts.min.css">
 
 <!-- Individual fonts -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/imingcp.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/lxgwwenkaitc.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/amstelvar.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/imingcp.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/lxgwwenkaitc.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/amstelvar.min.css">
 ```
 
 ### CSS

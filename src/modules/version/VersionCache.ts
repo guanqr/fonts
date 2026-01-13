@@ -46,7 +46,7 @@ export class VersionCacheService extends BaseService {
   }
 
   private async loadFromCacheBranch(): Promise<VersionCache | null> {
-    const owner = process.env.GITHUB_REPOSITORY_OWNER ?? 'reuixiy';
+    const owner = process.env.GITHUB_REPOSITORY_OWNER ?? 'guanqr';
     const repo = process.env.GITHUB_REPOSITORY?.split('/')[1] ?? 'fonts';
 
     try {

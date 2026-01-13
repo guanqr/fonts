@@ -29,7 +29,7 @@ export class ReadmeGenerator extends BaseService {
     return `# Web Font CDN
 
 Generated on: ${currentDateTime}
-Source: [reuixiy/fonts](https://github.com/reuixiy/fonts)
+Source: [guanqr/fonts](https://github.com/guanqr/fonts)
 
 ## Quick Start
 
@@ -38,10 +38,10 @@ Add the following links to your HTML head section to use these fonts:
 ### All Fonts (Recommended)
 \`\`\`html
 <!-- Minified CSS with all fonts -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/fonts.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/fonts.min.css">
 
 <!-- Unminified CSS with all fonts -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/fonts.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/fonts.css">
 \`\`\`
 
 ### Individual Fonts
@@ -49,28 +49,28 @@ Add the following links to your HTML head section to use these fonts:
 #### I.Ming CP (Traditional Chinese Serif)
 \`\`\`html
 <!-- Minified -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/imingcp.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/imingcp.min.css">
 
 <!-- Unminified -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/imingcp.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/imingcp.css">
 \`\`\`
 
 #### LXGW WenKai TC (Traditional Chinese Handwriting, Light Weight Only)
 \`\`\`html
 <!-- Minified -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/lxgwwenkaitc.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/lxgwwenkaitc.min.css">
 
 <!-- Unminified -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/lxgwwenkaitc.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/lxgwwenkaitc.css">
 \`\`\`
 
 #### Amstelvar (Latin Variable Font)
 \`\`\`html
 <!-- Minified -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/amstelvar.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/amstelvar.min.css">
 
 <!-- Unminified -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/reuixiy/fonts@build/css/amstelvar.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/amstelvar.css">
 \`\`\`
 
 ## Usage in CSS
@@ -126,7 +126,7 @@ Please refer to [LICENSE.md](./LICENSE.md) for detailed license information of e
 
 This repository is automatically updated weekly to check for new font versions. The build is triggered when changes are detected.
 
-For more information, visit the [source repository](https://github.com/reuixiy/fonts).
+For more information, visit the [source repository](https://github.com/guanqr/fonts).
 `;
   }
 }

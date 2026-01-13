@@ -50,7 +50,7 @@
     "automation",
     "github-actions"
   ],
-  "author": "reuixiy",
+  "author": "guanqr",
   "license": "MIT",
   "dependencies": {
     "@octokit/rest": "^22.0.1",

@@ -55,7 +55,7 @@ const CSS_TEMPLATE = {
  * License URL: ${fontConfig.license.url}
  * 
  * Generated: ${currentDateTime}
- * Generator: https://github.com/reuixiy/fonts
+ * Generator: https://github.com/guanqr/fonts
  */
 
 `,
@@ -66,7 +66,7 @@ const CSS_TEMPLATE = {
  * See individual CSS files for specific font license information.
  * 
  * Generated: ${currentDateTime}
- * Generator: https://github.com/reuixiy/fonts
+ * Generator: https://github.com/guanqr/fonts
  */
 
 /* Available fonts: ${availableFonts.join(', ')} */
