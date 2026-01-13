@@ -11,4 +11,27 @@ export const englishFonts: Record<string, FontConfig> = {
   //   license: { ... },
   //   ...
   // }
+  jetbrainsmono: {
+    name: 'JetBrainsMono',
+    displayName: 'JetBrains Mono',
+    source: {
+      type: 'github-repo',
+      owner: 'JetBrains',
+      repo: 'JetBrainsMono',
+      filePattern: 'JetBrainsMono-Regular.ttf',
+      url: 'https://github.com/JetBrains/JetBrainsMono',
+    },
+    license: {
+      type: 'SIL Open Font License 1.1',
+      url: 'https://github.com/JetBrains/JetBrainsMono/blob/master/OFL.txt',
+    },
+    weight: 400,
+    style: 'normal',
+    subset: {
+      type: 'size-based-chunks',
+    },
+    css: {
+      srcFormat: "url('../fonts/{fontId}/{filename}') format('woff2')",
+    },
+  },
 };
