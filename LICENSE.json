@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "generatedAt": "2026-01-13T11:29:19.209Z",
+    "generatedAt": "2026-01-13T12:07:39.438Z",
     "generator": "https://github.com/guanqr/fonts",
     "version": "5.0.0",
-    "totalFonts": 3
+    "totalFonts": 4
   },
   "compliance": {
     "checked": true,
@@ -50,6 +50,32 @@
       "license": {
         "type": "SIL Open Font License 1.1",
         "url": "https://github.com/lxgw/LxgwWenkaiTC/blob/main/OFL.txt",
+        "attribution": "Required when redistributing",
+        "requirements": [
+          "Include original copyright notice",
+          "Include license text when redistributing",
+          "Font name must be changed if modified",
+          "Cannot be sold by itself"
+        ],
+        "permissions": {
+          "webUse": true,
+          "commercialUse": true,
+          "modification": true
+        }
+      }
+    },
+    "jetbrainsmono": {
+      "name": "JetBrainsMono",
+      "displayName": "JetBrains Mono",
+      "description": "A beautiful font for web typography",
+      "source": {
+        "type": "github-repo",
+        "repository": "JetBrains/JetBrainsMono",
+        "url": "https://github.com/JetBrains/JetBrainsMono"
+      },
+      "license": {
+        "type": "SIL Open Font License 1.1",
+        "url": "https://github.com/JetBrains/JetBrainsMono/blob/master/OFL.txt",
         "attribution": "Required when redistributing",
         "requirements": [
           "Include original copyright notice",

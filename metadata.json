@@ -1,7 +1,7 @@
 {
-  "buildDate": "2026-01-13T11:29:19Z",
-  "buildId": "20955065643",
-  "commit": "ebb5460f36103c62a4f8a4f14d2253700d2326d8",
+  "buildDate": "2026-01-13T12:07:39Z",
+  "buildId": "20956106520",
+  "commit": "9a7ca954a1c4fd833a22ac0e152b4c15b163da0b",
   "buildType": "full",
   "updatedFonts": "all",
   "processedFonts": "all",
@@ -44,6 +44,29 @@
       "url": "https://github.com/lxgw/LxgwWenkaiTC/blob/main/OFL.txt"
     },
     "weight": 300,
+    "style": "normal",
+    "subset": {
+      "type": "size-based-chunks"
+    },
+    "css": {
+      "srcFormat": "url('../fonts/{fontId}/{filename}') format('woff2')"
+    }
+  },
+  "jetbrainsmono": {
+    "name": "JetBrainsMono",
+    "displayName": "JetBrains Mono",
+    "source": {
+      "type": "github-repo",
+      "owner": "JetBrains",
+      "repo": "JetBrainsMono",
+      "filePattern": "JetBrainsMono-Regular.ttf",
+      "url": "https://github.com/JetBrains/JetBrainsMono"
+    },
+    "license": {
+      "type": "SIL Open Font License 1.1",
+      "url": "https://github.com/JetBrains/JetBrainsMono/blob/master/OFL.txt"
+    },
+    "weight": 400,
     "style": "normal",
     "subset": {
       "type": "size-based-chunks"

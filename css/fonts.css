@@ -4,14 +4,15 @@
  * This file imports individual font CSS files with their respective licenses.
  * See individual CSS files for specific font license information.
  * 
- * Generated: 2026-01-13T11:29:19.205Z
+ * Generated: 2026-01-13T12:07:39.428Z
  * Generator: https://github.com/guanqr/fonts
  */
 
-/* Available fonts: imingcp, lxgwwenkaitc, amstelvar */
+/* Available fonts: imingcp, lxgwwenkaitc, jetbrainsmono, amstelvar */
 
 @import './imingcp.css';  /* I.MingCP */
 @import './lxgwwenkaitc.css';  /* LXGW WenKai TC */
+@import './jetbrainsmono.css';  /* JetBrains Mono */
 @import './amstelvar.css';  /* Amstelvar */
 
 /* End of imports */
