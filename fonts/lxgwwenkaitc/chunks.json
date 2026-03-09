@@ -1,7 +1,7 @@
 {
   "fontId": "lxgwwenkaitc",
   "displayName": "LXGW WenKai TC",
-  "generatedAt": "2026-02-16T16:37:24.323Z",
+  "generatedAt": "2026-03-09T16:52:47.616Z",
   "chunks": [
     {
       "chunkIndex": 0,
@@ -24,7 +24,7 @@
       "chunkIndex": 1,
       "filename": "1.woff2",
       "style": "regular",
-      "size": 5,
+      "size": 6,
       "unicodeRanges": [
         "U+4D-52",
         "U+54-57",
@@ -171,7 +171,7 @@
       "chunkIndex": 14,
       "filename": "14.woff2",
       "style": "regular",
-      "size": 5,
+      "size": 4,
       "unicodeRanges": [
         "U+370-377",
         "U+37A-37F",
@@ -7928,7 +7928,7 @@
       "chunkIndex": 88,
       "filename": "88.woff2",
       "style": "regular",
-      "size": 24,
+      "size": 23,
       "unicodeRanges": [
         "U+5074",
         "U+511F",
@@ -10175,7 +10175,7 @@
       "chunkIndex": 120,
       "filename": "120.woff2",
       "style": "regular",
-      "size": 37,
+      "size": 39,
       "unicodeRanges": [
         "U+306D-3096",
         "U+3099-30A7",
@@ -10304,7 +10304,7 @@
       "chunkIndex": 127,
       "filename": "127.woff2",
       "style": "regular",
-      "size": 7,
+      "size": 6,
       "unicodeRanges": [
         "U+FF55-FF5A",
         "U+FF5F-FF85"
@@ -10730,7 +10730,7 @@
       "chunkIndex": 150,
       "filename": "150.woff2",
       "style": "regular",
-      "size": 17,
+      "size": 18,
       "unicodeRanges": [
         "U+2E94-2E99",
         "U+2E9B-2EEB"
@@ -10741,7 +10741,7 @@
       "chunkIndex": 151,
       "filename": "151.woff2",
       "style": "regular",
-      "size": 13,
+      "size": 15,
       "unicodeRanges": [
         "U+2EEC-2EF3",
         "U+2F00-2F50"
@@ -10752,7 +10752,7 @@
       "chunkIndex": 152,
       "filename": "152.woff2",
       "style": "regular",
-      "size": 18,
+      "size": 20,
       "unicodeRanges": [
         "U+2F51-2FAA"
       ],
@@ -10762,7 +10762,7 @@
       "chunkIndex": 153,
       "filename": "153.woff2",
       "style": "regular",
-      "size": 20,
+      "size": 21,
       "unicodeRanges": [
         "U+2FAB-2FD5",
         "U+2FF0-3000",
@@ -16220,7 +16220,7 @@
       "chunkIndex": 229,
       "filename": "229.woff2",
       "style": "regular",
-      "size": 73,
+      "size": 74,
       "unicodeRanges": [
         "U+92B4-92B6",
         "U+92B9",
@@ -18556,7 +18556,7 @@
       "chunkIndex": 254,
       "filename": "254.woff2",
       "style": "regular",
-      "size": 61,
+      "size": 62,
       "unicodeRanges": [
         "U+304CC",
         "U+304D9",
@@ -18689,17 +18689,17 @@
         "U+311F1",
         "U+311F3",
         "U+311F6",
-        "U+311FB"
+        "U+311FB",
+        "U+311FE"
       ],
-      "characterCount": 155
+      "characterCount": 156
     },
     {
       "chunkIndex": 255,
       "filename": "255.woff2",
       "style": "regular",
-      "size": 45,
+      "size": 44,
       "unicodeRanges": [
-        "U+311FE",
         "U+31203",
         "U+3120C",
         "U+3124D",
@@ -18804,9 +18804,9 @@
         "U+3340A",
         "U+FFFFD"
       ],
-      "characterCount": 110
+      "characterCount": 109
     }
   ],
   "totalChunks": 256,
-  "totalSize": 9738
+  "totalSize": 9745
 }
