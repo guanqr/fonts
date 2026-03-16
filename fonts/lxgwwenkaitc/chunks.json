@@ -1,7 +1,7 @@
 {
   "fontId": "lxgwwenkaitc",
   "displayName": "LXGW WenKai TC",
-  "generatedAt": "2026-03-09T16:52:47.616Z",
+  "generatedAt": "2026-03-16T16:57:40.126Z",
   "chunks": [
     {
       "chunkIndex": 0,
@@ -171,7 +171,7 @@
       "chunkIndex": 14,
       "filename": "14.woff2",
       "style": "regular",
-      "size": 4,
+      "size": 5,
       "unicodeRanges": [
         "U+370-377",
         "U+37A-37F",
@@ -789,7 +789,7 @@
       "chunkIndex": 31,
       "filename": "31.woff2",
       "style": "regular",
-      "size": 26,
+      "size": 25,
       "unicodeRanges": [
         "U+4E94",
         "U+4EC0",
@@ -1392,7 +1392,7 @@
       "chunkIndex": 37,
       "filename": "37.woff2",
       "style": "regular",
-      "size": 37,
+      "size": 36,
       "unicodeRanges": [
         "U+4E4F",
         "U+4EA1",
@@ -1618,7 +1618,7 @@
       "chunkIndex": 39,
       "filename": "39.woff2",
       "style": "regular",
-      "size": 40,
+      "size": 39,
       "unicodeRanges": [
         "U+4E3D",
         "U+4E58-4E59",
@@ -4938,7 +4938,7 @@
       "chunkIndex": 63,
       "filename": "63.woff2",
       "style": "regular",
-      "size": 61,
+      "size": 60,
       "unicodeRanges": [
         "U+4EB5",
         "U+4F09",
@@ -10790,7 +10790,7 @@
       "chunkIndex": 155,
       "filename": "155.woff2",
       "style": "regular",
-      "size": 12,
+      "size": 13,
       "unicodeRanges": [
         "U+31B7-31E5",
         "U+31EF-31FF",
@@ -10802,7 +10802,7 @@
       "chunkIndex": 156,
       "filename": "156.woff2",
       "style": "regular",
-      "size": 19,
+      "size": 20,
       "unicodeRanges": [
         "U+323D-325F",
         "U+3280-32BB"
@@ -11677,7 +11677,7 @@
       "chunkIndex": 170,
       "filename": "170.woff2",
       "style": "regular",
-      "size": 45,
+      "size": 44,
       "unicodeRanges": [
         "U+502F-5039",
         "U+503B",
@@ -14486,7 +14486,7 @@
       "chunkIndex": 208,
       "filename": "208.woff2",
       "style": "regular",
-      "size": 59,
+      "size": 60,
       "unicodeRanges": [
         "U+7874-7876",
         "U+7879-787B",
@@ -15401,7 +15401,7 @@
       "chunkIndex": 219,
       "filename": "219.woff2",
       "style": "regular",
-      "size": 68,
+      "size": 67,
       "unicodeRanges": [
         "U+85F2",
         "U+85F4",
@@ -17135,7 +17135,7 @@
       "chunkIndex": 244,
       "filename": "244.woff2",
       "style": "regular",
-      "size": 46,
+      "size": 45,
       "unicodeRanges": [
         "U+1F23A-1F23B",
         "U+1F240-1F248",
@@ -17167,6 +17167,7 @@
         "U+2010C",
         "U+2010E-2010F",
         "U+20114",
+        "U+2011E-20120",
         "U+20122",
         "U+20129",
         "U+20136",
@@ -17198,7 +17199,7 @@
         "U+20587",
         "U+205FB",
         "U+20611",
-        "U+20628",
+        "U+20627-20628",
         "U+20674",
         "U+20676",
         "U+206A4",
@@ -17237,10 +17238,7 @@
         "U+20C53",
         "U+20C78",
         "U+20C8E",
-        "U+20C96",
-        "U+20CBF",
-        "U+20CCF-20CD0",
-        "U+20CD4"
+        "U+20C96"
       ],
       "characterCount": 152
     },
@@ -17250,7 +17248,9 @@
       "style": "regular",
       "size": 57,
       "unicodeRanges": [
-        "U+20CD5",
+        "U+20CBF",
+        "U+20CCF-20CD0",
+        "U+20CD4-20CD5",
         "U+20CFC",
         "U+20D02",
         "U+20D15",
@@ -17346,6 +17346,7 @@
         "U+21A38",
         "U+21A4B",
         "U+21B36",
+        "U+21B54",
         "U+21B90",
         "U+21BC1-21BC2",
         "U+21C26",
@@ -17384,12 +17385,7 @@
         "U+224E1",
         "U+2251B",
         "U+22524",
-        "U+225B3",
-        "U+225BF",
-        "U+22609",
-        "U+22650",
-        "U+2265D",
-        "U+226F3"
+        "U+225A9"
       ],
       "characterCount": 152
     },
@@ -17397,8 +17393,14 @@
       "chunkIndex": 246,
       "filename": "246.woff2",
       "style": "regular",
-      "size": 68,
+      "size": 67,
       "unicodeRanges": [
+        "U+225B3",
+        "U+225BF",
+        "U+22609",
+        "U+22650",
+        "U+2265D",
+        "U+226F3",
         "U+22736",
         "U+22775",
         "U+227B5",
@@ -17542,13 +17544,7 @@
         "U+246D8",
         "U+246ED",
         "U+24737",
-        "U+2474C",
-        "U+2477D",
-        "U+2479A",
-        "U+247A4",
-        "U+247B6",
-        "U+247E5",
-        "U+247EF"
+        "U+2474C"
       ],
       "characterCount": 153
     },
@@ -17558,6 +17554,12 @@
       "style": "regular",
       "size": 65,
       "unicodeRanges": [
+        "U+2477D",
+        "U+2479A",
+        "U+247A4",
+        "U+247B6",
+        "U+247E5",
+        "U+247EF",
         "U+248E5",
         "U+248E9",
         "U+249DB",
@@ -17699,13 +17701,7 @@
         "U+2648D",
         "U+264B9",
         "U+26529",
-        "U+26548",
-        "U+26553",
-        "U+265D2",
-        "U+2664D",
-        "U+26676",
-        "U+26678",
-        "U+266B0"
+        "U+26548"
       ],
       "characterCount": 153
     },
@@ -17715,6 +17711,12 @@
       "style": "regular",
       "size": 72,
       "unicodeRanges": [
+        "U+26553",
+        "U+265D2",
+        "U+2664D",
+        "U+26676",
+        "U+26678",
+        "U+266B0",
         "U+266DD",
         "U+266E8",
         "U+26706",
@@ -17855,13 +17857,7 @@
         "U+289C0",
         "U+28A0F",
         "U+28A50",
-        "U+28B46",
-        "U+28B49",
-        "U+28B4E",
-        "U+28B5B",
-        "U+28C3B",
-        "U+28C3E",
-        "U+28C44"
+        "U+28B46"
       ],
       "characterCount": 153
     },
@@ -17869,8 +17865,14 @@
       "chunkIndex": 249,
       "filename": "249.woff2",
       "style": "regular",
-      "size": 71,
+      "size": 73,
       "unicodeRanges": [
+        "U+28B49",
+        "U+28B4E",
+        "U+28B5B",
+        "U+28C3B",
+        "U+28C3E",
+        "U+28C44",
         "U+28C47",
         "U+28C4D-28C4F",
         "U+28C51",
@@ -17973,6 +17975,7 @@
         "U+2A833",
         "U+2A838",
         "U+2A83D",
+        "U+2A848",
         "U+2A8AE",
         "U+2A8BC",
         "U+2A8C8",
@@ -18003,14 +18006,7 @@
         "U+2AE5A",
         "U+2AED0",
         "U+2AEDA",
-        "U+2AF47",
-        "U+2AF94",
-        "U+2AFA2",
-        "U+2AFA6",
-        "U+2AFD6",
-        "U+2B042",
-        "U+2B061",
-        "U+2B088"
+        "U+2AF47"
       ],
       "characterCount": 154
     },
@@ -18018,8 +18014,15 @@
       "chunkIndex": 250,
       "filename": "250.woff2",
       "style": "regular",
-      "size": 68,
+      "size": 67,
       "unicodeRanges": [
+        "U+2AF94",
+        "U+2AFA2",
+        "U+2AFA6",
+        "U+2AFD6",
+        "U+2B042",
+        "U+2B061",
+        "U+2B088",
         "U+2B0D1",
         "U+2B11B",
         "U+2B11F",
@@ -18132,11 +18135,7 @@
         "U+2B803",
         "U+2B806",
         "U+2B80A",
-        "U+2B81A-2B81C",
-        "U+2B823-2B824",
-        "U+2B826",
-        "U+2B892",
-        "U+2B899"
+        "U+2B81A"
       ],
       "characterCount": 154
     },
@@ -18144,8 +18143,13 @@
       "chunkIndex": 251,
       "filename": "251.woff2",
       "style": "regular",
-      "size": 61,
+      "size": 60,
       "unicodeRanges": [
+        "U+2B81B-2B81C",
+        "U+2B823-2B824",
+        "U+2B826",
+        "U+2B892",
+        "U+2B899",
         "U+2B8B8",
         "U+2B8C6",
         "U+2B8CA",
@@ -18160,9 +18164,11 @@
         "U+2BA4F",
         "U+2BA51",
         "U+2BA5B",
+        "U+2BA65",
         "U+2BA6B",
         "U+2BA74",
         "U+2BA81",
+        "U+2BA88",
         "U+2BA98",
         "U+2BAC7",
         "U+2BAE6",
@@ -18204,12 +18210,14 @@
         "U+2BE75",
         "U+2BF17",
         "U+2BF1D",
+        "U+2BF23",
         "U+2BF4B",
         "U+2BF67",
         "U+2C029-2C02A",
         "U+2C05F",
         "U+2C080-2C081",
         "U+2C089",
+        "U+2C09B",
         "U+2C0A9",
         "U+2C0AD",
         "U+2C0C0",
@@ -18279,17 +18287,7 @@
         "U+2C8DE",
         "U+2C8E1",
         "U+2C8F3",
-        "U+2C907",
-        "U+2C90A",
-        "U+2C910",
-        "U+2C916",
-        "U+2C91D",
-        "U+2C928",
-        "U+2C930",
-        "U+2C97A",
-        "U+2C9B0-2C9B1",
-        "U+2C9BB",
-        "U+2C9C0"
+        "U+2C907"
       ],
       "characterCount": 155
     },
@@ -18299,6 +18297,16 @@
       "style": "regular",
       "size": 63,
       "unicodeRanges": [
+        "U+2C90A",
+        "U+2C910",
+        "U+2C916",
+        "U+2C91D",
+        "U+2C928",
+        "U+2C930",
+        "U+2C97A",
+        "U+2C9B0-2C9B1",
+        "U+2C9BB",
+        "U+2C9C0",
         "U+2CA02",
         "U+2CA0E",
         "U+2CA7D",
@@ -18410,7 +18418,16 @@
         "U+2E26F",
         "U+2E278",
         "U+2E41A",
-        "U+2E428",
+        "U+2E428"
+      ],
+      "characterCount": 155
+    },
+    {
+      "chunkIndex": 253,
+      "filename": "253.woff2",
+      "style": "regular",
+      "size": 59,
+      "unicodeRanges": [
         "U+2E502",
         "U+2E505",
         "U+2E50A",
@@ -18420,16 +18437,7 @@
         "U+2E5B1",
         "U+2E5FB",
         "U+2E64A-2E64B",
-        "U+2E6EA"
-      ],
-      "characterCount": 155
-    },
-    {
-      "chunkIndex": 253,
-      "filename": "253.woff2",
-      "style": "regular",
-      "size": 58,
-      "unicodeRanges": [
+        "U+2E6EA",
         "U+2E774-2E775",
         "U+2E777-2E77A",
         "U+2E81E",
@@ -18448,6 +18456,7 @@
         "U+2EB70",
         "U+2EB87",
         "U+2EBD9",
+        "U+2EBF0",
         "U+2EC35",
         "U+2EC63",
         "U+2EC7B",
@@ -18497,9 +18506,9 @@
         "U+2F9DE-2F9DF",
         "U+2F9F4",
         "U+30001-30002",
-        "U+30005",
+        "U+30004-30006",
         "U+30008-30009",
-        "U+30021-30022",
+        "U+30020-30022",
         "U+30053",
         "U+3005C",
         "U+30061",
@@ -18535,7 +18544,17 @@
         "U+30302",
         "U+30335",
         "U+3033B",
-        "U+3034E",
+        "U+3034E"
+      ],
+      "characterCount": 155
+    },
+    {
+      "chunkIndex": 254,
+      "filename": "254.woff2",
+      "style": "regular",
+      "size": 59,
+      "unicodeRanges": [
+        "U+30367-30368",
         "U+30370-30371",
         "U+30396",
         "U+303A0",
@@ -18548,16 +18567,7 @@
         "U+30450",
         "U+3045D-3045E",
         "U+304BC",
-        "U+304CA"
-      ],
-      "characterCount": 155
-    },
-    {
-      "chunkIndex": 254,
-      "filename": "254.woff2",
-      "style": "regular",
-      "size": 62,
-      "unicodeRanges": [
+        "U+304CA",
         "U+304CC",
         "U+304D9",
         "U+304E2-304E3",
@@ -18591,6 +18601,7 @@
         "U+308FB",
         "U+30915",
         "U+3094C",
+        "U+3094F",
         "U+30955",
         "U+3095B",
         "U+30969",
@@ -18665,6 +18676,7 @@
         "U+30F7C-30F7D",
         "U+30F82",
         "U+30F91",
+        "U+30F9B",
         "U+30FA0",
         "U+30FAB",
         "U+3106C",
@@ -18673,7 +18685,16 @@
         "U+310A8-310AA",
         "U+310B1",
         "U+310EA",
-        "U+310F1",
+        "U+310F1"
+      ],
+      "characterCount": 156
+    },
+    {
+      "chunkIndex": 255,
+      "filename": "255.woff2",
+      "style": "regular",
+      "size": 54,
+      "unicodeRanges": [
         "U+310FA",
         "U+31148",
         "U+3114B-3114C",
@@ -18690,16 +18711,7 @@
         "U+311F3",
         "U+311F6",
         "U+311FB",
-        "U+311FE"
-      ],
-      "characterCount": 156
-    },
-    {
-      "chunkIndex": 255,
-      "filename": "255.woff2",
-      "style": "regular",
-      "size": 44,
-      "unicodeRanges": [
+        "U+311FE",
         "U+31203",
         "U+3120C",
         "U+3124D",
@@ -18714,6 +18726,7 @@
         "U+3128C",
         "U+312AC-312AD",
         "U+312B3",
+        "U+312D0",
         "U+3132E",
         "U+31342",
         "U+31357",
@@ -18723,6 +18736,7 @@
         "U+3143F",
         "U+31455",
         "U+3145E",
+        "U+3154C",
         "U+31587",
         "U+3158E",
         "U+31592",
@@ -18732,6 +18746,7 @@
         "U+316E5",
         "U+3176B-3176C",
         "U+317DB",
+        "U+318C9",
         "U+3190F",
         "U+31AC9",
         "U+31B92",
@@ -18764,6 +18779,7 @@
         "U+321FD",
         "U+32217",
         "U+32235",
+        "U+32239",
         "U+32245",
         "U+322E4",
         "U+3234C",
@@ -18804,9 +18820,9 @@
         "U+3340A",
         "U+FFFFD"
       ],
-      "characterCount": 109
+      "characterCount": 132
     }
   ],
   "totalChunks": 256,
-  "totalSize": 9745
+  "totalSize": 9749
 }
