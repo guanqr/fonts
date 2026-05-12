@@ -31,10 +31,7 @@ jobs:
           version: latest
       
       - name: Install dependencies
-        run: |
-          pnpm config set ignore-scripts false
-          pnpm config set enable-pre-post-scripts true
-          pnpm install
+        run: pnpm install --no-ignore-scripts --frozen-lockfile
       
       - name: Check font versions
         id: version-check
