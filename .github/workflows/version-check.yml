@@ -31,7 +31,9 @@ jobs:
           version: latest
       
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          pnpm approve-builds --all
+          pnpm install
       
       - name: Check font versions
         id: version-check
