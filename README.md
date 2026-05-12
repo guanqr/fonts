@@ -18,6 +18,14 @@ Automated web font subsetting workflow with chunked loading for optimal performa
 - **Source**: [lxgw/LxgwWenkaiTC](https://github.com/lxgw/LxgwWenkaiTC)
 - **License**: SIL Open Font License 1.1
 
+### English Fonts
+
+#### JetBrains Mono
+- **Font ID**: `jetbrainsmono`
+- **Type**: Latin monospaced font
+- **Source**: [JetBrains/JetBrainsMono](https://github.com/JetBrains/JetBrainsMono)
+- **License**: SIL Open Font License 1.1
+
 ### Variable Fonts
 
 #### Amstelvar
@@ -39,6 +47,7 @@ Automated web font subsetting workflow with chunked loading for optimal performa
 <!-- Individual fonts -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/imingcp.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/lxgwwenkaitc.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/jetbrainsmono.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/amstelvar.min.css">
 ```
 
@@ -50,6 +59,9 @@ Automated web font subsetting workflow with chunked loading for optimal performa
 
 /* Traditional Chinese handwriting */
 .handwriting { font-family: 'LXGW WenKai TC', cursive; font-weight: 300; }
+
+/* Latin monospaced font */
+.monospaced { font-family: 'JetBrains Mono', monospace; }
 
 /* Latin variable font */
 .variable { font-family: 'Amstelvar', serif; }
