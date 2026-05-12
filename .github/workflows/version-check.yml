@@ -32,7 +32,8 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pnpm approve-builds --all
+          pnpm config set ignore-scripts false
+          pnpm config set enable-pre-post-scripts true
           pnpm install
       
       - name: Check font versions
