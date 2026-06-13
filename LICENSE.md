@@ -36,6 +36,11 @@ This project processes and distributes the following fonts under their respectiv
 - **Source**: https://github.com/lxgw/LxgwWenkaiTC
 - **License URL**: https://github.com/lxgw/LxgwWenkaiTC/blob/main/OFL.txt
 
+### JetBrains Mono
+- **License**: SIL Open Font License 1.1
+- **Source**: https://github.com/JetBrains/JetBrainsMono
+- **License URL**: https://github.com/JetBrains/JetBrainsMono/blob/master/OFL.txt
+
 ### Amstelvar
 - **License**: SIL Open Font License 1.1
 - **Source**: https://github.com/googlefonts/amstelvar

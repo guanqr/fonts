@@ -146,6 +146,8 @@ export class LicenseService extends BaseService {
       lxgwwenkaitc:
         'A handwriting-style Traditional Chinese font with elegant strokes',
       amstelvar: 'A parametric variable font with multiple design axes',
+      jetbrainsmono:
+        'A monospace developer font with programming ligatures and extended character support',
       'noto-sans-tc': 'Google Noto Sans Traditional Chinese font family',
       'source-han-sans': 'Adobe Source Han Sans pan-CJK font family',
     };
