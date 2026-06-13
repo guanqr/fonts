@@ -1,6 +1,6 @@
 # Web Font CDN
 
-Generated on: 2026-03-23T16:53:04.472Z
+Generated on: 2026-06-13T03:17:06.799Z
 Source: [guanqr/fonts](https://github.com/guanqr/fonts)
 
 ## Quick Start
@@ -45,6 +45,15 @@ Add the following links to your HTML head section to use these fonts:
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/amstelvar.css">
 ```
 
+#### JetBrains Mono (Monospace Developer Font)
+```html
+<!-- Minified -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/jetbrainsmono.min.css">
+
+<!-- Unminified -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/jetbrainsmono.css">
+```
+
 ## Usage in CSS
 
 After including the CSS files, you can use the fonts in your stylesheets:
@@ -66,6 +75,12 @@ After including the CSS files, you can use the fonts in your stylesheets:
   font-family: 'Amstelvar', serif;
   font-variation-settings: 'wght' 400, 'wdth' 100, 'opsz' 14;
 }
+
+/* Monospace Developer Font */
+.code-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 400;
+}
 ```
 
 ## Directory Structure
@@ -79,12 +94,15 @@ css/                   # CSS files with @font-face declarations
 ├── lxgwwenkaitc.css  # LXGW WenKai TC (unminified)
 ├── lxgwwenkaitc.min.css # LXGW WenKai TC (minified)
 ├── amstelvar.css     # Amstelvar (unminified)
-└── amstelvar.min.css # Amstelvar (minified)
+├── amstelvar.min.css # Amstelvar (minified)
+├── jetbrainsmono.css      # JetBrains Mono (unminified)
+└── jetbrainsmono.min.css  # JetBrains Mono (minified)
 
 fonts/                # Font files (.woff2 format)
 ├── imingcp/          # I.Ming CP chunks
 ├── lxgwwenkaitc/     # LXGW WenKai TC chunks
-└── amstelvar/        # Amstelvar chunks
+├── amstelvar/        # Amstelvar chunks
+└── jetbrainsmono/    # JetBrains Mono chunks
 
 LICENSE.md            # License information for all fonts
 LICENSE.json          # Machine-readable license data

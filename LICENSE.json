@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "generatedAt": "2026-03-23T16:53:04.470Z",
+    "generatedAt": "2026-06-13T03:17:06.797Z",
     "generator": "https://github.com/guanqr/fonts",
-    "version": "5.0.0",
+    "version": "5.1.0",
     "totalFonts": 4
   },
   "compliance": {
@@ -67,7 +67,7 @@
     "jetbrainsmono": {
       "name": "JetBrainsMono",
       "displayName": "JetBrains Mono",
-      "description": "A beautiful font for web typography",
+      "description": "A monospace developer font with programming ligatures and extended character support",
       "source": {
         "type": "github-repo",
         "repository": "JetBrains/JetBrainsMono",
