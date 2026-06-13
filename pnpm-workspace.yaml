@@ -1,5 +1,14 @@
+# Packages allowed to run postinstall/build scripts
+# pnpm v10.x compatibility (remove when dropping pnpm 10 support)
 onlyBuiltDependencies:
   - cn-font-split
   - esbuild
   - koffi
   - protobufjs
+
+# pnpm v11.x format
+allowBuilds:
+  cn-font-split: true
+  esbuild: true
+  koffi: true
+  protobufjs: true
