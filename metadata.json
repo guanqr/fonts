@@ -1,10 +1,10 @@
 {
-  "buildDate": "2026-06-13T03:17:06Z",
-  "buildId": "27454959216",
+  "buildDate": "2026-08-03T17:47:37Z",
+  "buildId": "30838299379",
   "commit": "5ab89e757272db71d3667e941eb306ee8b659fa6",
-  "buildType": "full",
-  "updatedFonts": "all",
-  "processedFonts": "all",
+  "buildType": "selective",
+  "updatedFonts": "amstelvar",
+  "processedFonts": "amstelvar",
   "fonts": {
   "imingcp": {
     "name": "I.MingCP",
