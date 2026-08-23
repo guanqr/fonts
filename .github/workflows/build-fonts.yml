@@ -25,17 +25,15 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      
+        uses: actions/checkout@v7
+
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
-      
+
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: latest
+        uses: pnpm/action-setup@v6
 
       - name: Install Node.js dependencies
         run: pnpm install
@@ -126,7 +124,7 @@ jobs:
         run: echo "date=$(date -u +%Y-%m-%d)" >> $GITHUB_OUTPUT
       
       - name: Incremental deploy to build branch
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v4.1.0
         with:
           github_token: ${{ secrets.PERSONAL_TOKEN }}
           publish_dir: ./build
