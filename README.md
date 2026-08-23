@@ -1,6 +1,6 @@
 # Web Font CDN
 
-Generated on: 2026-08-03T17:47:37.792Z
+Generated on: 2026-08-23T12:58:37.776Z
 Source: [guanqr/fonts](https://github.com/guanqr/fonts)
 
 ## Quick Start
