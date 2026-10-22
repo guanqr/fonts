@@ -20,13 +20,13 @@ export const checkCommand: CLICommand = {
       await validateCheckOptions(options);
 
       // Run the check and display results
-      await runVersionCheck(options.fontIds);
+      await runVersionCheck(options.fontIds, options.force);
     } catch (error: unknown) {
       console.error(
         chalk.red('❌ Version check failed:'),
         (error as Error).message
       );
-      process.exit(1);
+      process.exitCode = 1;
     }
   },
 };
@@ -36,7 +36,8 @@ export const checkCommand: CLICommand = {
  * Returns the VersionCheckResult for programmatic use
  */
 export async function runVersionCheck(
-  fontIds: string[] = []
+  fontIds: string[] = [],
+  force = false
 ): Promise<VersionCheckResult> {
   // Initialize version checker
   const versionChecker = new VersionChecker();
@@ -46,9 +47,9 @@ export async function runVersionCheck(
 
   let updateResults: VersionCheckResult;
   if (fontIds.length > 0) {
-    updateResults = await versionChecker.checkSpecific(fontIds);
+    updateResults = await versionChecker.checkSpecific(fontIds, force);
   } else {
-    updateResults = await versionChecker.run();
+    updateResults = await versionChecker.run(force);
   }
 
   // Display results

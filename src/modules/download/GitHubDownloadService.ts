@@ -1,9 +1,10 @@
 // GitHub download service
 import { Octokit } from '@octokit/rest';
-import fetch from 'node-fetch';
 import fs from 'fs-extra';
 import path from 'path';
 import { BaseService } from '@/core/base/BaseService.js';
+import { ConfigManager } from '@/config/index.js';
+import { downloadFileWithRetry } from '@/utils/DownloadUtils.js';
 import type { FontConfig } from '@/types/config.js';
 import type { DownloadResult, GitHubAsset, GitHubRelease } from '@/modules/download/types.js';
 import { FileValidator } from '@/modules/download/FileValidator.js';
@@ -148,20 +149,29 @@ export class GitHubDownloadService extends BaseService {
     outputPath: string,
     minSize: number
   ): Promise<void> {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Download failed: ${response.statusText}`);
-    }
+    const { retries, timeout } = ConfigManager.getEnvironmentConfig().download;
 
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    await fs.writeFile(outputPath, buffer);
+    const result = await downloadFileWithRetry(url, outputPath, {
+      retries,
+      timeoutMs: timeout,
+      onRetry: (retry, error, delayMs) => {
+        this.log(
+          `⚠️ Download attempt ${retry} failed for ${path.basename(
+            outputPath
+          )}: ${error.message}; retrying in ${delayMs}ms`,
+          'warn'
+        );
+      },
+    });
 
     // Validate the downloaded file
     try {
       await this.validator.validateFile(outputPath, minSize);
-      this.log(`✅ Downloaded and validated: ${path.basename(outputPath)}`);
+      this.log(
+        `✅ Downloaded and validated: ${path.basename(outputPath)} (${
+          result.attempts
+        } attempt(s))`
+      );
     } catch (validationError) {
       // Clean up invalid file
       await this.validator.cleanupInvalidFile(outputPath);

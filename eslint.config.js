@@ -15,6 +15,9 @@ export default [
         process: 'readonly',
         Buffer: 'readonly',
         fetch: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        AbortController: 'readonly',
       },
     },
     plugins: {
@@ -27,6 +30,25 @@ export default [
       'prefer-const': 'error',
       'no-var': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
+  {
+    files: ['**/*.mjs'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        Buffer: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        AbortController: 'readonly',
+        URL: 'readonly',
+      },
+    },
+    rules: {
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
   {
@@ -43,6 +65,6 @@ export default [
     },
   },
   {
-    ignores: ['node_modules/', 'build/', 'downloads/', 'dist/'],
+    ignores: ['node_modules/**', 'build/**', 'downloads/**', 'dist/**'],
   },
 ];

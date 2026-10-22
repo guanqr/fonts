@@ -32,9 +32,6 @@ export class HelpGenerator {
         content: [
           '  --help, -h     Show help information',
           '  --version, -v  Show version information',
-          '  --verbose      Enable verbose output',
-          '  --quiet        Suppress non-error output',
-          '  --force        Force build (skip version check)',
         ],
       },
       {
@@ -44,14 +41,13 @@ export class HelpGenerator {
           `  pnpm run cli:build                      # Build all fonts`,
           `  pnpm run cli:build --fonts imingcp   # Build specific font`,
           `  pnpm run cli:check                      # Check for updates`,
-          `  pnpm run cli:clean --all             # Clean everything`,
+          `  pnpm run cli:clean --all --force        # Clean everything`,
           '',
           '  # Direct CLI usage:',
           `  ${config.name} build --fonts "imingcp lxgwwenkaitc"  # Build multiple fonts`,
           `  ${config.name} check --fonts imingcp               # Check specific font`,
-          `  ${config.name} clean --build                       # Clean build artifacts`,
-          `  ${config.name} --force                             # Force build without version check`,
-          `  ${config.name} --force --fonts amstelvar           # Force build specific font`,
+          `  ${config.name} check --force --fonts imingcp       # Bypass version cache`,
+          `  ${config.name} clean --build --force               # Clean build artifacts`,
           '',
           '  # Font IDs support both formats:',
           '  --fonts "imingcp lxgwwenkaitc"    # Space-separated',
@@ -96,10 +92,10 @@ export class HelpGenerator {
           '  --fonts <ids>     Space or comma-separated font IDs to process',
           '  --output <dir>    Output directory (default: build)',
           '  --skip-download   Skip downloading fonts',
+          '  --skip-edit       Skip font editing',
           '  --skip-subset     Skip font subsetting',
           '  --skip-css        Skip CSS generation',
           '  --skip-docs       Skip documentation generation',
-          '  --force           Force execution (skip version check)',
         ],
       });
     } else if (command.name === 'check') {
@@ -107,7 +103,7 @@ export class HelpGenerator {
         title: 'Options',
         content: [
           '  --fonts <ids>     Space or comma-separated font IDs to check',
-          '  --force           Force check (bypass cache)',
+          '  --force           Bypass version cache (report all fonts as changed)',
         ],
       });
     } else if (command.name === 'download') {
@@ -116,7 +112,6 @@ export class HelpGenerator {
         content: [
           '  --fonts <ids>     Space or comma-separated font IDs to download',
           '  --output <dir>    Download directory (default: downloads)',
-          '  --force           Force re-download existing files',
         ],
       });
     } else if (command.name === 'subset') {
@@ -125,7 +120,6 @@ export class HelpGenerator {
         content: [
           '  --fonts <ids>     Space or comma-separated font IDs to subset',
           '  --output <dir>    Output directory (default: build)',
-          '  --force           Force re-processing',
         ],
       });
     } else if (command.name === 'css') {

@@ -39,12 +39,6 @@ export interface FontsConfig {
     fontsDir: string;
     cssDir: string;
   };
-  subsetting: {
-    formats: string[];
-    compression: string;
-    hinting: boolean;
-    desubroutinize: boolean;
-  };
 }
 
 export interface BuildConfig {
@@ -56,10 +50,6 @@ export interface BuildConfig {
   parallel: {
     enabled: boolean;
     maxWorkers: number;
-  };
-  cleanup: {
-    tempFiles: boolean;
-    oldBuilds: boolean;
   };
   validation: {
     strictMode: boolean;

@@ -51,7 +51,6 @@ export class FontEditor extends BaseService implements IFontEditor {
         },
       ],
       workingDirectory: process.cwd(),
-      pythonExecutable: 'python3',
       enableLogging: true,
       validateAfterEdit: true,
       ...config,
@@ -67,28 +66,24 @@ export class FontEditor extends BaseService implements IFontEditor {
     return this.executeWithErrorHandling(async () => {
       this.log('🚀 Starting font editing for all fonts');
 
-      // Check Python environment first
-      const pythonReady = await this.scriptRunner.checkPythonEnvironment();
-      if (!pythonReady) {
-        this.log(
-          '⚠️ Python environment is not ready - skipping font editing',
-          'warn'
-        );
-        this.log(
-          '💡 To enable font editing, ensure Python 3 and pip are installed',
-          'info'
-        );
-        return; // Gracefully skip instead of throwing error
-      }
-
       const fontIds = ConfigManager.getFontIds();
       this.log(`📝 Found ${fontIds.length} fonts to potentially edit`);
 
+      if (!(await this.prepareEditing(fontIds))) {
+        return;
+      }
+
       const results = await this.editFonts(fontIds);
       this.logResults(results);
+      this.assertNoEditErrors(results);
 
       if (this.scriptsConfig.validateAfterEdit) {
-        await this.validateEdits(fontIds);
+        const validEdits = await this.validateEdits(fontIds);
+        if (!validEdits) {
+          throw new Error(
+            `Font edit validation failed for: ${fontIds.join(', ')}`
+          );
+        }
       }
     }, 'edit all fonts');
   }
@@ -105,25 +100,22 @@ export class FontEditor extends BaseService implements IFontEditor {
         throw new Error(`Invalid font IDs: ${validation.invalid.join(', ')}`);
       }
 
-      // Check Python environment first
-      const pythonReady = await this.scriptRunner.checkPythonEnvironment();
-      if (!pythonReady) {
-        this.log(
-          '⚠️ Python environment is not ready - skipping font editing',
-          'warn'
-        );
-        this.log(
-          '💡 To enable font editing, ensure Python 3 and pip are installed',
-          'info'
-        );
-        return; // Gracefully skip instead of throwing error
+      const validFontIds = validation.valid;
+      if (!(await this.prepareEditing(validFontIds))) {
+        return;
       }
 
-      const results = await this.editFonts(validation.valid);
+      const results = await this.editFonts(validFontIds);
       this.logResults(results);
+      this.assertNoEditErrors(results);
 
       if (this.scriptsConfig.validateAfterEdit) {
-        await this.validateEdits(validation.valid);
+        const validEdits = await this.validateEdits(validFontIds);
+        if (!validEdits) {
+          throw new Error(
+            `Font edit validation failed for: ${validFontIds.join(', ')}`
+          );
+        }
       }
     }, 'edit specific fonts');
   }
@@ -163,6 +155,60 @@ export class FontEditor extends BaseService implements IFontEditor {
       this.log('🧹 Cleaning up edit module');
       await this.scriptRunner.cleanup();
     }, 'cleanup edit module');
+  }
+
+  private async prepareEditing(fontIds: string[]): Promise<boolean> {
+    const hasApplicableScripts = this.scriptsConfig.scripts.some(
+      (scriptConfig) =>
+        scriptConfig.enabled &&
+        fontIds.some((fontId) => this.shouldRunScript(scriptConfig, fontId))
+    );
+
+    if (!hasApplicableScripts) {
+      this.log('No applicable edit scripts for the selected fonts', 'info');
+      return false;
+    }
+
+    const pythonReady = await this.scriptRunner.checkPythonEnvironment();
+    if (pythonReady) {
+      return true;
+    }
+
+    const message = 'Python environment is not ready - skipping font editing';
+    if (process.env.CI) {
+      throw new Error(
+        `${message}; CI builds require enabled font edit scripts to run`
+      );
+    }
+
+    this.log(`⚠️ ${message}`, 'warn');
+    this.log(
+      '💡 To enable font editing, ensure Python 3 and pip are installed',
+      'info'
+    );
+    return false;
+  }
+
+  private assertNoEditErrors(results: EditResults): void {
+    const failures = Object.entries(results).flatMap(
+      ([fontId, fontResults]) =>
+        fontResults
+          .filter((result) => result.status === 'error')
+          .map(
+            (result) =>
+              `${fontId}/${result.script}: ${
+                result.message ?? 'Unknown error'
+              }`
+          )
+    );
+
+    if (failures.length > 0) {
+      throw new Error(
+        `Font editing failed for ${failures.length} operation(s): ${failures.join(
+          '; '
+        )}`
+      );
+    }
   }
 
   private async editFonts(fontIds: string[]): Promise<EditResults> {
@@ -254,7 +300,7 @@ export class FontEditor extends BaseService implements IFontEditor {
         continue;
       }
 
-      // Run script on the first font file (or all if needed)
+      // Run the script against every downloaded font file
       for (const fontFile of fontFiles) {
         const result = await this.scriptRunner.runScript(
           scriptConfig,
@@ -262,10 +308,6 @@ export class FontEditor extends BaseService implements IFontEditor {
           fontFile
         );
         results.push(result);
-
-        // For now, only process the first font file per script
-        // TODO: Add configuration for multi-file processing
-        break;
       }
     }
 

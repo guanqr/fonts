@@ -1,6 +1,6 @@
 {
   "name": "fonts",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "Automated web font subsetting workflow with chunked loading for optimal performance.",
   "main": "dist/index.js",
   "bin": {
@@ -39,6 +39,8 @@
     "clean:build": "pnpm run cli:clean --build",
     "clean:deps": "pnpm run cli:clean --deps",
     "clean:cache": "pnpm run cli:clean --cache",
+    "// Testing": "",
+    "test": "pnpm run build && node --test tests/download-utils.test.mjs tests/version.test.mjs tests/build-validator.test.mjs tests/prune-orphans.test.mjs tests/cli.test.mjs",
     "// Linting": "",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
@@ -57,7 +59,8 @@
     "chalk": "^5.6.2",
     "cn-font-split": "^7.4.3",
     "fs-extra": "^11.3.6",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "proxy-agent": "^8.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

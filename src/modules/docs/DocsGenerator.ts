@@ -2,6 +2,7 @@
 import { writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { BaseService } from '@/core/base/BaseService.js';
+import { PACKAGE_VERSION } from '@/config/version.js';
 import type {
   IDocsGenerator,
   DocsGenerationOptions,
@@ -60,7 +61,7 @@ export class DocsGenerator extends BaseService implements IDocsGenerator {
         const licenseData: LicenseData = {
           generatedAt: new Date().toISOString(),
           generator: 'https://github.com/guanqr/fonts',
-          version: '5.1.0',
+          version: PACKAGE_VERSION,
           fonts: fontLicenseData,
           compliance: complianceResult,
         };

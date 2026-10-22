@@ -1,11 +1,11 @@
 // Main font downloader implementation
 import fs from 'fs-extra';
-import fetch from 'node-fetch';
 import path from 'path';
 import { BaseService } from '@/core/base/BaseService.js';
 import type { IFontDownloader } from '@/core/interfaces/IFontDownloader.js';
 import type { FontConfig } from '@/types/config.js';
 import { ConfigManager } from '@/config/index.js';
+import { downloadFileWithRetry } from '@/utils/DownloadUtils.js';
 import { GitHubDownloadService } from '@/modules/download/GitHubDownloadService.js';
 import { FileValidator } from '@/modules/download/FileValidator.js';
 import type { DownloadResult, DownloadResults } from '@/modules/download/types.js';
@@ -15,9 +15,11 @@ export class FontDownloader extends BaseService implements IFontDownloader {
   private githubService: GitHubDownloadService;
   private validator: FileValidator;
 
-  constructor() {
+  constructor(downloadDir?: string) {
     super('FontDownloader');
-    this.downloadDir = path.join(process.cwd(), 'downloads');
+    this.downloadDir = path.resolve(
+      downloadDir ?? path.join(process.cwd(), 'downloads')
+    );
     this.githubService = new GitHubDownloadService();
     this.validator = new FileValidator();
   }
@@ -33,6 +35,7 @@ export class FontDownloader extends BaseService implements IFontDownloader {
 
       const results = await this.downloadFonts(fontIds);
       this.logResults(results);
+      this.assertNoDownloadFailures(results);
     }, 'download all fonts');
   }
 
@@ -51,6 +54,7 @@ export class FontDownloader extends BaseService implements IFontDownloader {
       await this.ensureDownloadDir();
       const results = await this.downloadFonts(validation.valid);
       this.logResults(results);
+      this.assertNoDownloadFailures(results);
     }, 'download specific fonts');
   }
 
@@ -100,6 +104,15 @@ export class FontDownloader extends BaseService implements IFontDownloader {
     await fs.ensureDir(this.downloadDir);
   }
 
+  private async cleanFontDownloadDir(fontId: string): Promise<void> {
+    const fontDir = path.join(this.downloadDir, fontId);
+
+    if (await fs.pathExists(fontDir)) {
+      await fs.emptyDir(fontDir);
+      this.log(`🧹 Cleaned previous downloads for ${fontId}`, 'debug');
+    }
+  }
+
   private async downloadFonts(fontIds: string[]): Promise<DownloadResults> {
     const results: DownloadResults = {};
 
@@ -126,6 +139,9 @@ export class FontDownloader extends BaseService implements IFontDownloader {
     fontConfig: FontConfig
   ): Promise<DownloadResult> {
     this.log(`📦 Processing font: ${fontConfig.displayName}`);
+
+    // Remove old versions and stale files before downloading the current source
+    await this.cleanFontDownloadDir(fontId);
 
     switch (fontConfig.source.type) {
       case 'github-release':
@@ -174,20 +190,29 @@ export class FontDownloader extends BaseService implements IFontDownloader {
 
       this.log(`Downloading from: ${source.url}`);
 
-      const response = await fetch(source.url);
-      if (!response.ok) {
-        throw new Error(`Download failed: ${response.statusText}`);
-      }
-
-      const arrayBuffer = await response.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-
-      await fs.writeFile(outputPath, buffer);
+      const { retries, timeout } =
+        ConfigManager.getEnvironmentConfig().download;
+      const result = await downloadFileWithRetry(source.url, outputPath, {
+        retries,
+        timeoutMs: timeout,
+        onRetry: (retry, error, delayMs) => {
+          this.log(
+            `⚠️ Download attempt ${retry} failed for ${path.basename(
+              outputPath
+            )}: ${error.message}; retrying in ${delayMs}ms`,
+            'warn'
+          );
+        },
+      });
 
       // Validate the downloaded file
       try {
         await this.validator.validateFile(outputPath, 100 * 1024);
-        this.log(`✅ Downloaded and validated to: ${outputPath}`);
+        this.log(
+          `✅ Downloaded and validated to: ${outputPath} (${
+            result.attempts
+          } attempt(s))`
+        );
       } catch (validationError) {
         await this.validator.cleanupInvalidFile(outputPath);
         throw validationError;
@@ -238,6 +263,25 @@ export class FontDownloader extends BaseService implements IFontDownloader {
       const filePath = path.join(fontDir, fontFiles[0]);
       return this.validator.checkExistingFile(filePath, 100 * 1024);
     }
+  }
+
+  private assertNoDownloadFailures(results: DownloadResults): void {
+    const failed = Object.entries(results).filter(
+      ([, result]) => 'error' in result
+    );
+
+    if (failed.length === 0) {
+      return;
+    }
+
+    const details = failed
+      .map(([fontId, result]) => {
+        const message = 'error' in result ? result.error : 'Unknown error';
+        return `${fontId}: ${message}`;
+      })
+      .join('; ');
+
+    throw new Error(`Failed to download ${failed.length} font(s): ${details}`);
   }
 
   private logResults(results: DownloadResults): void {

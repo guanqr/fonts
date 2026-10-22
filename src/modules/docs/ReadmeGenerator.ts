@@ -33,18 +33,11 @@ Source: [guanqr/fonts](https://github.com/guanqr/fonts)
 
 ## Quick Start
 
-Add the following links to your HTML head section to use these fonts:
+Load only the font stylesheet you actually use. The Chinese font stylesheets contain
+hundreds of \`@font-face\` rules; the unified stylesheet imports all of them and is only
+a good choice when a page needs multiple fonts.
 
-### All Fonts (Recommended)
-\`\`\`html
-<!-- Minified CSS with all fonts -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/fonts.min.css">
-
-<!-- Unminified CSS with all fonts -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/fonts.css">
-\`\`\`
-
-### Individual Fonts
+### Recommended: Individual Fonts
 
 #### I.Ming CP (Traditional Chinese Serif)
 \`\`\`html
@@ -81,6 +74,24 @@ Add the following links to your HTML head section to use these fonts:
 <!-- Unminified -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/jetbrainsmono.css">
 \`\`\`
+
+### All Fonts (Optional)
+
+Use this only if you need more than one font:
+
+\`\`\`html
+<!-- Minified CSS with all fonts -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/fonts.min.css">
+
+<!-- Unminified CSS with all fonts -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/guanqr/fonts@build/css/fonts.css">
+\`\`\`
+
+## Caching
+
+\`@build\` URLs are convenient but can be cached by jsDelivr and browsers (up to 7 days). Font chunks use content-hashed filenames, so a new stylesheet always references new files. If you need updates immediately, use a commit- or release-pinned jsDelivr URL instead of \`@build\`.
+
+CSS files keep stable names, so returning visitors may keep using a cached stylesheet until it expires. Old chunks are retained for a safety window and pruned later.
 
 ## Usage in CSS
 

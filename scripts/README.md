@@ -1,8 +1,10 @@
 # Font Editing Scripts
 
-This directory contains Python scripts used for font editing and modification tasks as part of the Font Build Workflow v5.0.0.
+This directory contains Python scripts used for font editing and modification tasks as part of the Font Build Workflow v5.1.0.
 
 The FontEditor module automatically executes these scripts during the build process, after downloading fonts and before subsetting.
+
+Python 3 and pip are required. On Windows the runner detects `python` or `py`; the virtual environment interpreter is `.venv-scripts\Scripts\python.exe`. On other platforms it uses `python3` / `python` and `.venv-scripts/bin/python`.
 
 ## Available Scripts
 
@@ -140,4 +142,4 @@ The FontEditor automatically handles Python environment setup:
 - **Virtual Environment**: Creates `.venv-scripts/` for isolated package installation
 - **Package Management**: Installs required packages automatically
 - **Compatibility**: Works with externally-managed Python environments (like Homebrew)
-- **Cleanup**: Use `pnpm run cli:clean --cache` to remove Python environments
+- **Cleanup**: Use `pnpm run cli:clean --cache --force` to remove Python environments

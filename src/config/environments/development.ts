@@ -14,8 +14,8 @@ export const developmentConfig: EnvironmentConfig = {
   },
 
   download: {
-    retries: 1,
-    timeout: 10000, // 10 seconds
+    retries: 2,
+    timeout: 120000, // 2 minutes
   },
 
   processing: {

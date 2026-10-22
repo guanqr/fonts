@@ -9,6 +9,8 @@ export interface VersionInfo {
 export interface GitHubRelease {
   tag_name: string;
   published_at: string | null;
+  draft?: boolean;
+  prerelease?: boolean;
   assets: Array<{
     browser_download_url?: string;
   }>;

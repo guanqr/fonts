@@ -7,7 +7,6 @@ import type {
 } from '@/types/config.js';
 import { fontsConfig, allFonts } from '@/config/fonts/index.js';
 import { buildConfig } from '@/config/build.js';
-import { subsettingConfig } from '@/config/subsetting.js';
 import { getEnvironmentConfig } from '@/config/environments/index.js';
 
 export class ConfigManager {
@@ -18,15 +17,7 @@ export class ConfigManager {
   // Load complete configuration
   static load(): FontsConfig {
     if (!this._fontsConfig) {
-      this._fontsConfig = {
-        ...fontsConfig,
-        subsetting: {
-          formats: [...subsettingConfig.formats],
-          compression: subsettingConfig.compression,
-          hinting: subsettingConfig.hinting,
-          desubroutinize: subsettingConfig.desubroutinize,
-        },
-      };
+      this._fontsConfig = { ...fontsConfig };
     }
     return this._fontsConfig;
   }
@@ -115,7 +106,7 @@ export class ConfigManager {
 }
 
 // Export configurations for direct access
-export { fontsConfig, buildConfig, subsettingConfig };
+export { fontsConfig, buildConfig };
 export {
   allFonts,
   chineseFonts,

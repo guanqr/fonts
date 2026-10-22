@@ -2,20 +2,20 @@ name: Weekly Font Version Check
 
 on:
   schedule:
-    # Run weekly on Mondays at 16:00 UTC
-    - cron: '0 16 * * 1'
+    # Monday 00:00 Hong Kong time (Sunday 16:00 UTC)
+    - cron: '0 16 * * 0'
   workflow_dispatch: # Allow manual triggering
 
 jobs:
   check-versions:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      actions: write
+      contents: read
     outputs:
       has-updates: ${{ steps.version-check.outputs.has-updates }}
       updated-fonts: ${{ steps.version-check.outputs.updated-fonts }}
-    
+      version-cache: ${{ steps.export-cache.outputs.version-cache }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -41,35 +41,22 @@ jobs:
           # Run version check using CLI
           pnpm run cli:check
       
-      - name: Update version cache
+      - name: Export version cache
+        id: export-cache
         if: steps.version-check.outputs.has-updates == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         run: |
-          # Commit version cache to a dedicated cache branch for persistence
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          
-          # Create/checkout orphan cache branch (clean branch with only cache file)
-          git fetch origin cache || true
-          git checkout cache 2>/dev/null || git checkout --orphan cache
-          git pull origin cache || true
-          
-          # Clear everything except our cache file
-          git rm -rf . 2>/dev/null || true
-          
-          # Copy the updated cache file
-          cp .version-cache.json version-cache.json
-          
-          # Commit and push the single cache file
-          git add version-cache.json
-          if git diff --staged --quiet; then
-            echo "No cache changes to commit"
-          else
-            git commit -m "Update font version cache - $(date)"
-            git push origin cache
-            echo "✅ Version cache committed to cache branch"
+          set -eu
+          if [ ! -f .version-cache.json ]; then
+            echo "❌ Version cache file not found"
+            exit 1
           fi
+
+          {
+            echo "version-cache<<VERSION_CACHE_EOF"
+            cat .version-cache.json
+            echo "VERSION_CACHE_EOF"
+          } >> "$GITHUB_OUTPUT"
+          echo "✅ Version cache exported for post-build commit"
 
   trigger-build:
     needs: check-versions
@@ -82,16 +69,20 @@ jobs:
     steps:
       - name: Trigger font build workflow
         uses: actions/github-script@v9
+        env:
+          UPDATED_FONTS: ${{ needs.check-versions.outputs.updated-fonts }}
+          VERSION_CACHE: ${{ needs.check-versions.outputs.version-cache }}
         with:
           github-token: ${{ secrets.PERSONAL_TOKEN }}
           script: |
-            github.rest.actions.createWorkflowDispatch({
+            await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'build-fonts.yml',
               ref: 'main',
               inputs: {
-                'updated-fonts': '${{ needs.check-versions.outputs.updated-fonts }}'
+                'updated-fonts': process.env.UPDATED_FONTS || 'all',
+                'version-cache': process.env.VERSION_CACHE || ''
               }
             });
       

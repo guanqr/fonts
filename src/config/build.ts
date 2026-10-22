@@ -14,11 +14,6 @@ export const buildConfig: BuildConfig = {
     maxWorkers: cpus().length,
   },
 
-  cleanup: {
-    tempFiles: true,
-    oldBuilds: false,
-  },
-
   validation: {
     strictMode: true,
     validateDownloads: true,

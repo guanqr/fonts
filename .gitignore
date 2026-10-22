@@ -7,7 +7,7 @@ node_modules/
 .env.local
 
 # Downloaded fonts (temporary)
-downloads/
+/downloads/
 
 # Python virtual environment for scripts
 .venv-scripts/
@@ -18,8 +18,8 @@ __pycache__/
 *.pyo
 
 # Build outputs
-build/
-dist/
+/build/
+/dist/
 
 # Version cache (auto-generated)
 .version-cache.json
@@ -31,3 +31,6 @@ dist/
 .idea/
 *.swp
 *.swo
+
+# Local Claude Code files
+.claude/

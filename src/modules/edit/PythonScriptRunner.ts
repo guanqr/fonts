@@ -7,6 +7,7 @@ import type { PythonScriptConfig, EditResult } from '@/modules/edit/types.js';
 
 export class PythonScriptRunner extends BaseService {
   private pythonExecutable: string;
+  private readonly pythonCandidates: string[];
   private workingDirectory: string;
   private venvDir: string;
   private venvPython: string;
@@ -15,25 +16,47 @@ export class PythonScriptRunner extends BaseService {
   constructor(workingDirectory?: string, pythonExecutable?: string) {
     super('PythonScriptRunner');
     this.workingDirectory = workingDirectory ?? process.cwd();
-    this.pythonExecutable = pythonExecutable ?? 'python3';
+    this.pythonCandidates = pythonExecutable
+      ? [pythonExecutable]
+      : this.getDefaultPythonCandidates();
+    this.pythonExecutable = this.pythonCandidates[0];
     this.venvDir = path.join(this.workingDirectory, '.venv-scripts');
-    this.venvPython = path.join(this.venvDir, 'bin', 'python');
+    this.venvPython =
+      process.platform === 'win32'
+        ? path.join(this.venvDir, 'Scripts', 'python.exe')
+        : path.join(this.venvDir, 'bin', 'python');
+  }
+
+  private getDefaultPythonCandidates(): string[] {
+    return process.platform === 'win32'
+      ? ['python', 'py', 'python3']
+      : ['python3', 'python'];
   }
 
   async checkPythonEnvironment(): Promise<boolean> {
     return this.executeWithErrorHandling(async () => {
       this.log('🔍 Checking Python environment...');
 
-      // Check Python
-      const pythonWorks = await this.checkCommand(this.pythonExecutable, [
-        '--version',
-      ]);
-      if (!pythonWorks) {
-        this.log(`❌ Python not found: ${this.pythonExecutable}`, 'error');
+      let selectedPython: string | undefined;
+      for (const candidate of this.pythonCandidates) {
+        if (await this.checkCommand(candidate, ['--version'])) {
+          selectedPython = candidate;
+          break;
+        }
+      }
+
+      if (!selectedPython) {
+        this.log(
+          `❌ Python not found. Tried: ${this.pythonCandidates.join(', ')}`,
+          'error'
+        );
         return false;
       }
 
-      // Create virtual environment if it doesn't exist
+      this.pythonExecutable = selectedPython;
+      this.log(`✅ Using Python executable: ${this.pythonExecutable}`);
+
+      // Create or validate the virtual environment
       await this.ensureVirtualEnvironment();
 
       this.log('✅ Python environment is ready');
@@ -43,9 +66,19 @@ export class PythonScriptRunner extends BaseService {
 
   private async ensureVirtualEnvironment(): Promise<void> {
     if (await fs.pathExists(this.venvDir)) {
-      this.log('📦 Virtual environment already exists');
-      this.venvCreated = true;
-      return;
+      const venvReady = await this.checkCommand(this.venvPython, ['--version']);
+      if (venvReady) {
+        this.log('📦 Virtual environment already exists');
+        this.venvCreated = true;
+        return;
+      }
+
+      this.log(
+        '⚠️ Existing virtual environment is not usable; recreating',
+        'warn'
+      );
+      this.venvCreated = false;
+      await fs.remove(this.venvDir);
     }
 
     this.log('🔧 Creating virtual environment for script execution...');

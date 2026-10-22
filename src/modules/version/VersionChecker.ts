@@ -7,6 +7,7 @@ import type { FontConfig } from '@/types/config.js';
 import { ConfigManager } from '@/config/index.js';
 import { GitHubVersionService } from '@/modules/version/GitHubVersionService.js';
 import { VersionCacheService } from '@/modules/version/VersionCache.js';
+import type { VersionCache } from '@/types/api.js';
 import type { VersionInfo } from '@/modules/version/types.js';
 
 export class VersionChecker extends BaseService implements IVersionChecker {
@@ -19,11 +20,11 @@ export class VersionChecker extends BaseService implements IVersionChecker {
     this.cacheService = new VersionCacheService();
   }
 
-  async run(): Promise<VersionCheckResult> {
+  async run(force = false): Promise<VersionCheckResult> {
     return this.executeWithErrorHandling(async () => {
       this.log('🚀 Font Version Checker');
 
-      const result = await this.checkVersions();
+      const result = await this.checkVersions(force);
 
       if (result.hasUpdates) {
         this.log(
@@ -48,7 +49,10 @@ export class VersionChecker extends BaseService implements IVersionChecker {
     }, 'run version check');
   }
 
-  async checkSpecific(fontIds: string[]): Promise<VersionCheckResult> {
+  async checkSpecific(
+    fontIds: string[],
+    force = false
+  ): Promise<VersionCheckResult> {
     return this.executeWithErrorHandling(async () => {
       this.log(
         `🔍 Checking versions for specific fonts: ${fontIds.join(', ')}`
@@ -61,21 +65,25 @@ export class VersionChecker extends BaseService implements IVersionChecker {
         );
       }
 
-      return this.checkVersionsForFonts(validationResult.valid);
+      return this.checkVersionsForFonts(validationResult.valid, force);
     }, 'check specific font versions');
   }
 
-  private async checkVersions(): Promise<VersionCheckResult> {
+  private async checkVersions(force: boolean): Promise<VersionCheckResult> {
     const fontIds = ConfigManager.getFontIds();
-    return this.checkVersionsForFonts(fontIds);
+    return this.checkVersionsForFonts(fontIds, force);
   }
 
   private async checkVersionsForFonts(
-    fontIds: string[]
+    fontIds: string[],
+    force: boolean
   ): Promise<VersionCheckResult> {
-    const versionCache = await this.cacheService.loadCache();
+    const versionCache: VersionCache = force
+      ? {}
+      : await this.cacheService.loadCache();
     const updatedFonts: UpdatedFont[] = [];
     const currentVersions: Record<string, string> = {};
+    const failures: string[] = [];
 
     this.log('🔍 Checking font versions...');
 
@@ -105,11 +113,19 @@ export class VersionChecker extends BaseService implements IVersionChecker {
           this.log(`  ✓ No update: ${currentVersion}`, 'debug');
         }
       } catch (error) {
-        this.log(
-          `  ❌ Error checking ${fontId}: ${(error as Error).message}`,
-          'error'
-        );
+        const message =
+          error instanceof Error ? error.message : 'Unknown error';
+        this.log(`  ❌ Error checking ${fontId}: ${message}`, 'error');
+        failures.push(`${fontId}: ${message}`);
       }
+    }
+
+    if (failures.length > 0) {
+      throw new Error(
+        `Version check failed for ${failures.length} font(s): ${failures.join(
+          '; '
+        )}`
+      );
     }
 
     return {
@@ -129,7 +145,11 @@ export class VersionChecker extends BaseService implements IVersionChecker {
           source.repo
         );
       case 'github-repo':
-        return this.githubService.checkRepoCommit(source.owner, source.repo);
+        return this.githubService.checkRepoCommit(
+          source.owner,
+          source.repo,
+          source.files?.map((file) => file.path) ?? []
+        );
       default:
         throw new Error(`Unsupported source type: ${source.type}`);
     }

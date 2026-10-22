@@ -22,10 +22,4 @@ export const fontsConfig: FontsConfig = {
     fontsDir: 'fonts',
     cssDir: 'css',
   },
-  subsetting: {
-    formats: ['woff2'],
-    compression: 'brotli',
-    hinting: true,
-    desubroutinize: true,
-  },
 };

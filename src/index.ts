@@ -1,6 +1,7 @@
 // Main entry point - Delegates to CLI for single source of truth
 import chalk from 'chalk';
-import { URL } from 'url';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { CLI } from '@/cli/index.js';
 import { runVersionCheck } from '@/cli/commands/check.js';
 
@@ -42,7 +43,7 @@ async function main(): Promise<void> {
     }
   } catch (error: unknown) {
     console.error(chalk.red('❌ Process failed:'), (error as Error).message);
-    process.exit(1);
+    process.exitCode = 1;
   }
 }
 
@@ -57,10 +58,18 @@ async function runFullWorkflow(cli: CLI): Promise<void> {
   // Use the reusable check function
   const updateResults = await runVersionCheck();
 
-  // Only build if there are updates
+  // Only build the fonts that changed
   if (updateResults.hasUpdates) {
-    console.log(chalk.bold.yellow('\n📋 Step 2: Building fonts...'));
-    await cli.run(['build']);
+    const updatedFontIds = updateResults.updatedFonts.map((font) => font.id);
+
+    if (updatedFontIds.length === 0) {
+      console.log(chalk.yellow('\n💤 No updated font IDs to build'));
+      return;
+    }
+
+    console.log(chalk.bold.yellow('\n📋 Step 2: Building updated fonts...'));
+    console.log(chalk.gray(`Fonts: ${updatedFontIds.join(', ')}`));
+    await cli.run(['build', '--fonts', updatedFontIds.join(' ')]);
     console.log(chalk.bold.green('\n🎉 Full workflow completed successfully!'));
   } else {
     console.log(chalk.bold.blue('\n💤 Skipping build - no updates needed'));
@@ -120,8 +129,12 @@ async function runSpecificFonts(cli: CLI, fontIds: string[]): Promise<void> {
   await cli.run(['build', '--fonts', fontIds.join(' ')]);
 }
 
-// Run if called directly
-if (import.meta.url === new URL(process.argv[1] ?? '', 'file:').href) {
+// Run only when executed directly (cross-platform, including Windows paths)
+const isDirectRun =
+  process.argv[1] !== undefined &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isDirectRun) {
   main();
 }
 

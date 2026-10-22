@@ -1,5 +1,6 @@
 // Clean command implementation
 import chalk from 'chalk';
+import { createInterface } from 'node:readline/promises';
 import { FileSystem } from '@/utils/FileSystem.js';
 import { PathUtils } from '@/utils/PathUtils.js';
 import { ArgsParser } from '@/cli/utils/args.js';
@@ -101,8 +102,22 @@ export const cleanCommand: CLICommand = {
         console.log(chalk.red('\n⚠️  This action cannot be undone!'));
         console.log(chalk.gray('Use --force to skip this confirmation.'));
 
-        // In a real CLI, we'd prompt for confirmation here
-        console.log(chalk.yellow('Proceeding with cleanup...'));
+        if (!process.stdin.isTTY) {
+          console.error(
+            chalk.red(
+              'Refusing to clean without --force in a non-interactive terminal.'
+            )
+          );
+          process.exitCode = 1;
+          return;
+        }
+
+        const confirmed = await confirmCleanup();
+        if (!confirmed) {
+          console.log(chalk.yellow('\nCleanup cancelled.'));
+          process.exitCode = 1;
+          return;
+        }
       }
 
       // Execute clean tasks
@@ -131,7 +146,23 @@ export const cleanCommand: CLICommand = {
       }
     } catch (error: unknown) {
       console.error(chalk.red('❌ Clean failed:'), (error as Error).message);
-      process.exit(1);
+      process.exitCode = 1;
     }
   },
 };
+
+async function confirmCleanup(): Promise<boolean> {
+  const readline = createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  try {
+    const answer = await readline.question(
+      chalk.yellow('Type "yes" to continue: ')
+    );
+    return answer.trim().toLowerCase() === 'yes';
+  } finally {
+    readline.close();
+  }
+}

@@ -15,7 +15,7 @@ export const productionConfig: EnvironmentConfig = {
 
   download: {
     retries: 3,
-    timeout: 30000, // 30 seconds
+    timeout: 300000, // 5 minutes
   },
 
   processing: {

@@ -1,7 +1,6 @@
 // CLI entry point
 import chalk from 'chalk';
-import { readFile } from 'node:fs/promises';
-import { PathUtils } from '@/utils/index.js';
+import { PACKAGE_VERSION } from '@/config/version.js';
 import { ArgsParser } from '@/cli/utils/args.js';
 import { HelpGenerator } from '@/cli/utils/help.js';
 import { CLIValidator } from '@/cli/utils/validation.js';
@@ -21,7 +20,7 @@ export class CLI {
   constructor() {
     this.config = {
       name: 'fonts',
-      version: '5.1.0',
+      version: PACKAGE_VERSION,
       description: 'Web font auto-subsetting workflow tool',
       commands: [
         checkCommand,
@@ -38,11 +37,12 @@ export class CLI {
 
   async run(argv: string[] = process.argv.slice(2)): Promise<void> {
     try {
+      this.validateCommands();
       const args = ArgsParser.parse(argv);
 
       // Handle version request
       if (ArgsParser.isVersionRequested(args)) {
-        await this.showVersion();
+        this.showVersion();
         return;
       }
 
@@ -59,18 +59,24 @@ export class CLI {
     }
   }
 
-  private async showVersion(): Promise<void> {
-    try {
-      // Try to read version from package.json
-      const packagePath = PathUtils.resolve(process.cwd(), 'package.json');
-      const packageContent = await readFile(packagePath, 'utf-8');
-      const packageData = JSON.parse(packageContent) as { version?: string };
+  private showVersion(): void {
+    console.log(`${this.config.name} v${PACKAGE_VERSION}`);
+  }
 
-      const version = packageData.version ?? this.config.version;
-      console.log(`${this.config.name} v${version}`);
-    } catch {
-      // Fallback to config version
-      console.log(`${this.config.name} v${this.config.version}`);
+  private validateCommands(): void {
+    const seen = new Map<string, string>();
+
+    for (const command of this.config.commands) {
+      const names = [command.name, ...(command.aliases ?? [])];
+      for (const name of names) {
+        const existing = seen.get(name);
+        if (existing) {
+          throw new Error(
+            `Duplicate command or alias "${name}" (${existing} and ${command.name})`
+          );
+        }
+        seen.set(name, command.name);
+      }
     }
   }
 

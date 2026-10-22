@@ -1,6 +1,7 @@
 // Download command implementation
 import chalk from 'chalk';
 import { FontDownloader } from '@/modules/download/FontDownloader.js';
+import { PathUtils } from '@/utils/PathUtils.js';
 import { CLIValidator } from '@/cli/utils/validation.js';
 import { ArgsParser } from '@/cli/utils/args.js';
 import type { CLICommand, CLIArgs, StandardOptions } from '@/cli/types.js';
@@ -16,16 +17,17 @@ export const downloadCommand: CLICommand = {
     try {
       // Parse standard options
       const options = ArgsParser.parseStandardOptions(args);
-      // Override default output directory for downloads
+      const downloadDir = ArgsParser.getOption(args, 'output') ?? 'downloads';
       const downloadOptions = {
         ...options,
-        outputDir:
-          options.outputDir === 'build' ? 'downloads' : options.outputDir,
+        outputDir: downloadDir,
       };
       await validateDownloadOptions(downloadOptions);
 
       // Initialize font downloader
-      const fontDownloader = new FontDownloader();
+      const fontDownloader = new FontDownloader(
+        PathUtils.resolve(process.cwd(), downloadDir)
+      );
 
       // Download fonts
       console.log(chalk.yellow('📋 Downloading fonts...'));

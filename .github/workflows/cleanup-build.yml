@@ -1,0 +1,65 @@
+name: Cleanup Orphan Font Chunks
+
+on:
+  schedule:
+    # Monthly on the first day at 04:17 UTC
+    - cron: '17 4 1 * *'
+  workflow_dispatch:
+    inputs:
+      retention-days:
+        description: 'Keep unreferenced WOFF2 files newer than this many days'
+        required: false
+        default: '30'
+        type: string
+
+concurrency:
+  group: fonts-build
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: Checkout build branch
+        uses: actions/checkout@v7
+        with:
+          ref: build
+          path: build-branch
+          fetch-depth: 0
+
+      - name: Prune orphan chunks
+        env:
+          RETENTION_DAYS: ${{ github.event.inputs.retention-days || '30' }}
+        run: |
+          set -eu
+          node scripts/prune-orphan-chunks.mjs \
+            --build-dir build-branch \
+            --retention-days "$RETENTION_DAYS" \
+            --apply
+
+      - name: Commit and push cleanup
+        working-directory: build-branch
+        run: |
+          set -eu
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No orphan chunks to remove"
+          else
+            git commit -m "Prune orphan font chunks - $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push origin build
+            echo "✅ Orphan chunks pruned"
+          fi

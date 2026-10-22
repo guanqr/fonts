@@ -1,9 +1,11 @@
 // Main font subsetting service using cn-font-split
 import fs from 'fs-extra';
 import path from 'path';
+import { createHash } from 'node:crypto';
 import { fontSplit } from 'cn-font-split';
 import { BaseService } from '@/core/base/BaseService.js';
 import { ErrorHandler } from '@/core/services/ErrorHandler.js';
+import { ConfigManager } from '@/config/index.js';
 import type { IFontSubsetter } from '@/core/interfaces/IFontSubsetter.js';
 import type { FontConfig } from '@/types/config.js';
 import type {
@@ -74,19 +76,103 @@ export class FontSubsetter extends BaseService implements IFontSubsetter {
   async validateOutput(fontIds?: string[]): Promise<boolean> {
     try {
       const fontsToValidate = fontIds ?? (await this.getDownloadedFonts());
+      let allValid = true;
 
       for (const fontId of fontsToValidate) {
         const fontDir = path.join(this.outputDir, 'fonts', fontId);
         if (!(await fs.pathExists(fontDir))) {
           this.log(`❌ Missing font directory for ${fontId}`, 'error');
-          return false;
+          allValid = false;
+          continue;
+        }
+
+        const metadataFiles = await this.findChunkMetadataFiles(fontDir);
+        if (metadataFiles.length === 0) {
+          this.log(`❌ Missing chunks.json for ${fontId}`, 'error');
+          allValid = false;
+          continue;
+        }
+
+        for (const metadataPath of metadataFiles) {
+          try {
+            const metadata = (await fs.readJson(
+              metadataPath
+            )) as ChunksMetadata;
+
+            if (
+              !Array.isArray(metadata.chunks) ||
+              metadata.chunks.length === 0
+            ) {
+              this.log(`❌ Empty chunk metadata: ${metadataPath}`, 'error');
+              allValid = false;
+              continue;
+            }
+
+            const chunkDir = path.dirname(metadataPath);
+            for (const chunk of metadata.chunks) {
+              if (!chunk.filename) {
+                this.log(
+                  `❌ Chunk entry without filename in ${metadataPath}`,
+                  'error'
+                );
+                allValid = false;
+                continue;
+              }
+
+              const chunkPath = path.join(chunkDir, chunk.filename);
+              if (!(await fs.pathExists(chunkPath))) {
+                this.log(`❌ Missing chunk file: ${chunkPath}`, 'error');
+                allValid = false;
+              }
+            }
+          } catch (error) {
+            this.log(
+              `❌ Invalid chunk metadata ${metadataPath}: ${
+                error instanceof Error ? error.message : 'Unknown error'
+              }`,
+              'error'
+            );
+            allValid = false;
+          }
         }
       }
 
-      return true;
-    } catch {
+      return allValid;
+    } catch (error) {
+      this.log(
+        `❌ Output validation failed: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`,
+        'error'
+      );
       return false;
     }
+  }
+
+  /**
+   * Find chunks.json files in a font directory and its style subdirectories
+   */
+  private async findChunkMetadataFiles(fontDir: string): Promise<string[]> {
+    const metadataFiles: string[] = [];
+    const mainMetadataPath = path.join(fontDir, 'chunks.json');
+
+    if (await fs.pathExists(mainMetadataPath)) {
+      metadataFiles.push(mainMetadataPath);
+    }
+
+    const entries = await fs.readdir(fontDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isDirectory()) {
+        continue;
+      }
+
+      const styleMetadataPath = path.join(fontDir, entry.name, 'chunks.json');
+      if (await fs.pathExists(styleMetadataPath)) {
+        metadataFiles.push(styleMetadataPath);
+      }
+    }
+
+    return metadataFiles;
   }
 
   /**
@@ -109,7 +195,13 @@ export class FontSubsetter extends BaseService implements IFontSubsetter {
    * Process fonts in parallel batches
    */
   private async processFontsInBatches(fontIds: string[]): Promise<void> {
-    const batches = this.createBatches(fontIds, fontIds.length);
+    const buildConfig = ConfigManager.getBuildConfig();
+    const maxWorkers = buildConfig.parallel.enabled
+      ? Math.max(1, buildConfig.parallel.maxWorkers)
+      : 1;
+    const batchSize = Math.max(1, Math.min(maxWorkers, fontIds.length));
+    const batches = this.createBatches(fontIds, batchSize);
+    const failures: Array<{ fontId: string; message: string }> = [];
 
     for (const batch of batches) {
       const batchPromises = batch.map(async (fontId: string) => {
@@ -117,10 +209,23 @@ export class FontSubsetter extends BaseService implements IFontSubsetter {
           await this.processSingleFont(fontId);
         } catch (error) {
           this.handleFontProcessingError(fontId, error);
+          failures.push({
+            fontId,
+            message:
+              error instanceof Error ? error.message : 'Unknown error',
+          });
         }
       });
 
       await Promise.all(batchPromises);
+    }
+
+    if (failures.length > 0) {
+      throw new Error(
+        `Failed to process ${failures.length} font(s): ${failures
+          .map(({ fontId, message }) => `${fontId} (${message})`)
+          .join('; ')}`
+      );
     }
   }
 
@@ -152,6 +257,8 @@ export class FontSubsetter extends BaseService implements IFontSubsetter {
       this.log(`⚠️ No downloaded files for ${fontId}`, 'warn');
       return;
     }
+
+    await this.cleanFontOutputDir(fontId);
 
     const totalChunks = await this.processAllFontFiles(
       fontId,
@@ -366,30 +473,52 @@ export class FontSubsetter extends BaseService implements IFontSubsetter {
     const chunks: Chunk[] = [];
 
     for (const info of chunkInfoFromCSS) {
-      const chunkPath = path.join(outputDir, info.filename);
-
-      // Only read file size, not full buffer to save memory
-      let size: number;
-
-      try {
-        const stats = await fs.stat(chunkPath);
-        size = stats.size;
-      } catch {
-        // If file doesn't exist, skip
-        continue;
-      }
-
+      const prepared = await this.prepareChunkFile(outputDir, info);
       chunks.push({
         index: info.index,
-        filename: info.filename,
-        path: chunkPath,
-        size: this.bytesToKB(size), // Convert to KB
+        filename: prepared.filename,
+        path: path.join(outputDir, prepared.filename),
+        size: this.bytesToKB(prepared.size), // Convert to KB
         unicodeRanges: info.unicodeRanges,
         characterCount: info.characterCount,
       });
     }
 
     return chunks;
+  }
+
+  /**
+   * Rename a generated chunk to include a content hash
+   */
+  private async prepareChunkFile(
+    outputDir: string,
+    info: ChunkInfo
+  ): Promise<{ filename: string; size: number }> {
+    const chunkPath = path.join(outputDir, info.filename);
+    const stats = await fs.stat(chunkPath);
+    const contents = await fs.readFile(chunkPath);
+    const hash = createHash('sha256')
+      .update(contents)
+      .digest('hex')
+      .slice(0, 10);
+    const extension = path.extname(info.filename) || '.woff2';
+    const filename = `${info.index}-${hash}${extension}`;
+
+    await fs.rename(chunkPath, path.join(outputDir, filename));
+
+    return { filename, size: stats.size };
+  }
+
+  /**
+   * Remove any previous output for a font before rebuilding it
+   */
+  private async cleanFontOutputDir(fontId: string): Promise<void> {
+    const fontDir = path.join(this.outputDir, 'fonts', fontId);
+
+    if (await fs.pathExists(fontDir)) {
+      await fs.emptyDir(fontDir);
+      this.log(`🧹 Cleaned previous output for ${fontId}`, 'debug');
+    }
   }
 
   /**

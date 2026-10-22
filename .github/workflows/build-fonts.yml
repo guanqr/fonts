@@ -8,12 +8,21 @@ on:
         required: false
         default: 'all'
         type: string
+      version-cache:
+        description: 'Version cache JSON to persist after a successful build'
+        required: false
+        default: ''
+        type: string
   push:
     branches: [ main ]
     paths:
       - 'src/**'
       - 'scripts/**/*.py'
       - '.github/workflows/build-fonts.yml'
+
+concurrency:
+  group: fonts-build
+  cancel-in-progress: false
 
 jobs:
   build-fonts:
@@ -35,8 +44,16 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
 
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
       - name: Install Node.js dependencies
         run: pnpm install
+
+      - name: Run tests
+        run: pnpm test
 
       - name: Build fonts using CLI
         env:
@@ -45,10 +62,7 @@ jobs:
           echo "🔄 Starting font build workflow..."
           UPDATED_FONTS="${{ github.event.inputs.updated-fonts || 'all' }}"
           echo "📋 Updated fonts parameter: '$UPDATED_FONTS'"
-          
-          # Build TypeScript first
-          pnpm run build
-          
+
           if [ "$UPDATED_FONTS" = "all" ] || [ -z "$UPDATED_FONTS" ]; then
             echo "🎯 Building all fonts (full build)..."
             pnpm run cli:build
@@ -63,16 +77,29 @@ jobs:
       
       - name: Verify build output
         run: |
+          set -eu
           echo "🔍 Checking build output..."
-          if [ -d "build" ]; then
-            echo "✅ Build directory exists"
-            echo "📁 Build directory contents:"
-            find build -type f | head -20
-          else
-            echo "❌ Build directory not found"
-            echo "📁 Current directory contents:"
-            ls -la
+
+          for dir in build build/css build/fonts; do
+            if [ ! -d "$dir" ]; then
+              echo "❌ Missing directory: $dir"
+              exit 1
+            fi
+          done
+
+          if [ -z "$(find build/css -type f -name '*.css' -print -quit)" ]; then
+            echo "❌ No CSS files generated"
+            exit 1
           fi
+
+          if [ -z "$(find build/fonts -type f -name '*.woff2' -print -quit)" ]; then
+            echo "❌ No WOFF2 font files generated"
+            exit 1
+          fi
+
+          echo "✅ Build output exists"
+          echo "📁 Build directory contents:"
+          find build -type f | sed -n '1,20p'
       
       - name: Create build metadata
         run: |
@@ -129,7 +156,7 @@ jobs:
           github_token: ${{ secrets.PERSONAL_TOKEN }}
           publish_dir: ./build
           publish_branch: build
-          keep_files: true # Preserve existing files in the build branch
+          keep_files: true # Keep old hashed chunks for cached CSS; cleanup-build.yml prunes after retention
           commit_message: |
             🔄 Font build ${{ github.run_id }} - ${{ steps.date.outputs.date }}
             
@@ -165,4 +192,40 @@ jobs:
           if [ -d build/css ]; then
             echo "🎨 Generated CSS files:"
             ls -la build/css/
+          fi
+
+      - name: Update version cache after successful build
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.version-cache != ''
+        env:
+          VERSION_CACHE: ${{ github.event.inputs.version-cache }}
+        run: |
+          set -eu
+          echo "🔄 Updating version cache..."
+
+          echo "$VERSION_CACHE" | jq -e 'type == "object" and ([.[] | .version | type] | all(. == "string"))' > /dev/null
+          printf '%s\n' "$VERSION_CACHE" > .version-cache.json
+
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          git fetch origin cache || true
+          git checkout cache 2>/dev/null || git checkout --orphan cache
+          git pull origin cache || true
+
+          # Merge with the existing cache so unrelated font entries are preserved
+          if [ -f version-cache.json ]; then
+            jq -s '.[0] * .[1]' version-cache.json .version-cache.json > /tmp/merged-version-cache.json
+            mv /tmp/merged-version-cache.json .version-cache.json
+          fi
+
+          git rm -rf . 2>/dev/null || true
+
+          cp .version-cache.json version-cache.json
+          git add version-cache.json
+          if git diff --staged --quiet; then
+            echo "No cache changes to commit"
+          else
+            git commit -m "Update font version cache - $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push origin cache
+            echo "✅ Version cache committed to cache branch"
           fi

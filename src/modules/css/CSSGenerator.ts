@@ -112,11 +112,9 @@ export class CSSGenerator extends BaseService implements ICSSGenerator {
 
       const processedFonts = await this.getProcessedFonts();
       if (processedFonts.length === 0) {
-        this.log(
-          'No processed fonts found. Please run font processing first.',
-          'warn'
+        throw new Error(
+          'No processed fonts found. Please run font processing first.'
         );
-        return;
       }
 
       this.log(
@@ -168,18 +166,23 @@ export class CSSGenerator extends BaseService implements ICSSGenerator {
     fontConfigs: Record<string, FontConfig>
   ): Promise<AllResults> {
     const allResults: AllResults = {};
+    const failures: string[] = [];
 
     for (const fontId of fontIds) {
       const fontConfig = fontConfigs[fontId];
       if (!fontConfig) {
-        this.log(`No config found for font: ${fontId}`, 'warn');
+        const message = `No config found for font: ${fontId}`;
+        this.log(message, 'warn');
+        failures.push(message);
         continue;
       }
 
       try {
         const processResult = await this.getProcessingResult(fontId);
         if (!processResult) {
-          this.log(`No processing result for: ${fontId}`, 'warn');
+          const message = `No processing result for: ${fontId}`;
+          this.log(message, 'warn');
+          failures.push(message);
           continue;
         }
 
@@ -188,8 +191,21 @@ export class CSSGenerator extends BaseService implements ICSSGenerator {
         this.log(`Completed CSS generation: ${fontId}`);
       } catch (error) {
         await this.handleFontGenerationError(fontId, error, allResults);
+        failures.push(
+          `${fontId}: ${
+            error instanceof Error ? error.message : 'Unknown error'
+          }`
+        );
         continue;
       }
+    }
+
+    if (failures.length > 0) {
+      throw new Error(
+        `CSS generation failed for ${failures.length} font(s): ${failures.join(
+          '; '
+        )}`
+      );
     }
 
     return allResults;
