@@ -6,6 +6,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ValidationUtils } from '../dist/utils/ValidationUtils.js';
 
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -13,6 +14,15 @@ const projectRoot = path.resolve(
 );
 const cliPath = path.join(projectRoot, 'dist', 'cli', 'bin.js');
 const execFileAsync = promisify(execFile);
+
+test('allows absolute output paths and rejects traversal', () => {
+  assert.equal(ValidationUtils.isSafePath('/tmp/fonts-output'), true);
+  assert.equal(ValidationUtils.isSafePath('C:\\temp\\fonts-output'), true);
+  assert.equal(ValidationUtils.isSafePath('relative/fonts-output'), true);
+  assert.equal(ValidationUtils.isSafePath('../fonts-output'), false);
+  assert.equal(ValidationUtils.isSafePath('foo/../fonts-output'), false);
+  assert.equal(ValidationUtils.isSafePath('foo/..'), false);
+});
 
 async function runCli(args, cwd = projectRoot) {
   const { stdout, stderr } = await execFileAsync(

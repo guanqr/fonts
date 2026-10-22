@@ -63,7 +63,12 @@ export class ValidationUtils {
    */
   static isSafePath(path: string): boolean {
     const normalized = path.replace(/\\/g, '/');
-    return !normalized.includes('../') && !normalized.startsWith('/');
+
+    if (normalized.includes('\0')) {
+      return false;
+    }
+
+    return !normalized.split('/').includes('..');
   }
 
   /**

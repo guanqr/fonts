@@ -44,8 +44,8 @@ export class CLIValidator {
     }
 
     if (!ValidationUtils.isSafePath(path)) {
-      errors.push('Output directory path contains unsafe characters');
-      warnings.push('Avoid using ".." or absolute paths for security');
+      errors.push('Output directory path contains ".." traversal');
+      warnings.push('Choose an output path without ".." segments');
     }
 
     return {
