@@ -2,7 +2,6 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { createHash } from 'node:crypto';
-import { fontSplit } from 'cn-font-split';
 import { BaseService } from '@/core/base/BaseService.js';
 import { ErrorHandler } from '@/core/services/ErrorHandler.js';
 import { ConfigManager } from '@/config/index.js';
@@ -355,6 +354,9 @@ export class FontSubsetter extends BaseService implements IFontSubsetter {
     style: FontStyle
   ): Promise<void> {
     const inputBuffer = new Uint8Array(await fs.readFile(inputPath));
+    // Load the native subsetter only when it is actually needed. This keeps
+    // CLI commands such as --help/--version usable on machines without the FFI library.
+    const { fontSplit } = await import('cn-font-split');
 
     await fontSplit({
       input: inputBuffer,

@@ -36,6 +36,7 @@ async function runCli(args, cwd = projectRoot) {
 test('reports the package version', async () => {
   const output = await runCli(['--version']);
   assert.match(output, /fonts v5\.1\.0/);
+  assert.doesNotMatch(output, /cn-font-split using Node FFI/);
 });
 
 test('keeps help and command aliases consistent', async () => {

@@ -52,6 +52,23 @@ jobs:
       - name: Install Node.js dependencies
         run: pnpm install
 
+      - name: Prepare font subsetter native library
+        run: |
+          pnpm rebuild cn-font-split
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const packageJson = require.resolve('cn-font-split/package.json');
+            const distDir = path.join(path.dirname(packageJson), 'dist');
+            const extension = process.platform === 'win32' ? '.dll' : process.platform === 'darwin' ? '.dylib' : '.so';
+            const libraries = fs.readdirSync(distDir).filter((name) => name.startsWith('libffi') && name.endsWith(extension));
+            console.log('FFI libraries:', libraries.join(', ') || '(none)');
+            if (libraries.length === 0) {
+              console.error('cn-font-split native library is missing');
+              process.exit(1);
+            }
+          "
+
       - name: Run tests
         run: pnpm test
 
