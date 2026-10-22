@@ -1,11 +1,11 @@
 {
   "fontId": "amstelvar",
   "displayName": "Amstelvar",
-  "generatedAt": "2026-08-23T12:58:30.587Z",
+  "generatedAt": "2026-10-22T17:01:13.756Z",
   "chunks": [
     {
       "chunkIndex": 0,
-      "filename": "0.woff2",
+      "filename": "0-0806474a57.woff2",
       "style": "italic",
       "size": 120,
       "unicodeRanges": [
@@ -16,7 +16,7 @@
     },
     {
       "chunkIndex": 1,
-      "filename": "1.woff2",
+      "filename": "1-799311ef20.woff2",
       "style": "italic",
       "size": 60,
       "unicodeRanges": [
@@ -26,7 +26,7 @@
     },
     {
       "chunkIndex": 2,
-      "filename": "2.woff2",
+      "filename": "2-f2fab45e96.woff2",
       "style": "italic",
       "size": 91,
       "unicodeRanges": [
@@ -36,7 +36,7 @@
     },
     {
       "chunkIndex": 3,
-      "filename": "3.woff2",
+      "filename": "3-506f8a043b.woff2",
       "style": "italic",
       "size": 42,
       "unicodeRanges": [
@@ -46,7 +46,7 @@
     },
     {
       "chunkIndex": 4,
-      "filename": "4.woff2",
+      "filename": "4-8f42546554.woff2",
       "style": "italic",
       "size": 72,
       "unicodeRanges": [
@@ -56,7 +56,7 @@
     },
     {
       "chunkIndex": 5,
-      "filename": "5.woff2",
+      "filename": "5-0c7894fddf.woff2",
       "style": "italic",
       "size": 89,
       "unicodeRanges": [
@@ -66,7 +66,7 @@
     },
     {
       "chunkIndex": 6,
-      "filename": "6.woff2",
+      "filename": "6-02fb7a8fea.woff2",
       "style": "italic",
       "size": 110,
       "unicodeRanges": [
@@ -86,7 +86,7 @@
     },
     {
       "chunkIndex": 7,
-      "filename": "7.woff2",
+      "filename": "7-b7435ed060.woff2",
       "style": "italic",
       "size": 14,
       "unicodeRanges": [
@@ -101,7 +101,7 @@
     },
     {
       "chunkIndex": 8,
-      "filename": "8.woff2",
+      "filename": "8-fadf51b8ff.woff2",
       "style": "italic",
       "size": 100,
       "unicodeRanges": [
@@ -116,7 +116,7 @@
     },
     {
       "chunkIndex": 9,
-      "filename": "9.woff2",
+      "filename": "9-b13cc014fa.woff2",
       "style": "italic",
       "size": 21,
       "unicodeRanges": [
@@ -127,7 +127,7 @@
     },
     {
       "chunkIndex": 10,
-      "filename": "10.woff2",
+      "filename": "10-4a59a610ea.woff2",
       "style": "italic",
       "size": 142,
       "unicodeRanges": [
@@ -137,7 +137,7 @@
     },
     {
       "chunkIndex": 11,
-      "filename": "11.woff2",
+      "filename": "11-25813d210c.woff2",
       "style": "italic",
       "size": 158,
       "unicodeRanges": [
@@ -155,7 +155,7 @@
     },
     {
       "chunkIndex": 12,
-      "filename": "12.woff2",
+      "filename": "12-aa087a493b.woff2",
       "style": "italic",
       "size": 54,
       "unicodeRanges": [
@@ -170,7 +170,7 @@
     },
     {
       "chunkIndex": 13,
-      "filename": "13.woff2",
+      "filename": "13-61544ce9ee.woff2",
       "style": "italic",
       "size": 7,
       "unicodeRanges": [
@@ -184,7 +184,7 @@
     },
     {
       "chunkIndex": 14,
-      "filename": "14.woff2",
+      "filename": "14-7b413cc44f.woff2",
       "style": "italic",
       "size": 55,
       "unicodeRanges": [
@@ -200,7 +200,7 @@
     },
     {
       "chunkIndex": 15,
-      "filename": "15.woff2",
+      "filename": "15-8ca6597de9.woff2",
       "style": "italic",
       "size": 48,
       "unicodeRanges": [
@@ -210,7 +210,7 @@
     },
     {
       "chunkIndex": 16,
-      "filename": "16.woff2",
+      "filename": "16-a53d4d30f6.woff2",
       "style": "italic",
       "size": 85,
       "unicodeRanges": [
@@ -237,7 +237,7 @@
     },
     {
       "chunkIndex": 17,
-      "filename": "17.woff2",
+      "filename": "17-83f2250242.woff2",
       "style": "italic",
       "size": 95,
       "unicodeRanges": [

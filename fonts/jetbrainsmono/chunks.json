@@ -1,11 +1,11 @@
 {
   "fontId": "jetbrainsmono",
   "displayName": "JetBrains Mono",
-  "generatedAt": "2026-08-23T12:58:30.586Z",
+  "generatedAt": "2026-10-22T17:01:13.753Z",
   "chunks": [
     {
       "chunkIndex": 0,
-      "filename": "0.woff2",
+      "filename": "0-3210eb240b.woff2",
       "style": "regular",
       "size": 58,
       "unicodeRanges": [
@@ -123,7 +123,7 @@
     },
     {
       "chunkIndex": 1,
-      "filename": "1.woff2",
+      "filename": "1-a8e23b71ae.woff2",
       "style": "regular",
       "size": 7,
       "unicodeRanges": [
@@ -140,7 +140,7 @@
     },
     {
       "chunkIndex": 2,
-      "filename": "2.woff2",
+      "filename": "2-3ba15d54b6.woff2",
       "style": "regular",
       "size": 4,
       "unicodeRanges": [
@@ -156,7 +156,7 @@
     },
     {
       "chunkIndex": 3,
-      "filename": "3.woff2",
+      "filename": "3-68af34e7c9.woff2",
       "style": "regular",
       "size": 3,
       "unicodeRanges": [
@@ -168,7 +168,7 @@
     },
     {
       "chunkIndex": 4,
-      "filename": "4.woff2",
+      "filename": "4-e821a8f9b7.woff2",
       "style": "regular",
       "size": 4,
       "unicodeRanges": [
@@ -185,7 +185,7 @@
     },
     {
       "chunkIndex": 5,
-      "filename": "5.woff2",
+      "filename": "5-22b186de8d.woff2",
       "style": "regular",
       "size": 6,
       "unicodeRanges": [
@@ -217,7 +217,7 @@
     },
     {
       "chunkIndex": 6,
-      "filename": "6.woff2",
+      "filename": "6-f01d235b5b.woff2",
       "style": "regular",
       "size": 6,
       "unicodeRanges": [
@@ -256,7 +256,7 @@
     },
     {
       "chunkIndex": 7,
-      "filename": "7.woff2",
+      "filename": "7-4ea4f02e54.woff2",
       "style": "regular",
       "size": 4,
       "unicodeRanges": [
@@ -275,7 +275,7 @@
     },
     {
       "chunkIndex": 8,
-      "filename": "8.woff2",
+      "filename": "8-8bb5372187.woff2",
       "style": "regular",
       "size": 3,
       "unicodeRanges": [
@@ -285,7 +285,7 @@
     },
     {
       "chunkIndex": 9,
-      "filename": "9.woff2",
+      "filename": "9-29c02e8ee2.woff2",
       "style": "regular",
       "size": 3,
       "unicodeRanges": [
@@ -295,7 +295,7 @@
     },
     {
       "chunkIndex": 10,
-      "filename": "10.woff2",
+      "filename": "10-712d40bb67.woff2",
       "style": "regular",
       "size": 3,
       "unicodeRanges": [
@@ -310,7 +310,7 @@
     },
     {
       "chunkIndex": 11,
-      "filename": "11.woff2",
+      "filename": "11-6d18aa80af.woff2",
       "style": "regular",
       "size": 17,
       "unicodeRanges": [
@@ -381,7 +381,7 @@
     },
     {
       "chunkIndex": 12,
-      "filename": "12.woff2",
+      "filename": "12-7ecf467494.woff2",
       "style": "regular",
       "size": 16,
       "unicodeRanges": [
@@ -425,7 +425,7 @@
     },
     {
       "chunkIndex": 13,
-      "filename": "13.woff2",
+      "filename": "13-13cecf80b4.woff2",
       "style": "regular",
       "size": 10,
       "unicodeRanges": [
@@ -439,7 +439,7 @@
     },
     {
       "chunkIndex": 14,
-      "filename": "14.woff2",
+      "filename": "14-f81ec8f5f6.woff2",
       "style": "regular",
       "size": 12,
       "unicodeRanges": [
