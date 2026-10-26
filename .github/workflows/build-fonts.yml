@@ -54,20 +54,32 @@ jobs:
 
       - name: Prepare font subsetter native library
         run: |
-          pnpm rebuild cn-font-split
-          node -e "
-            const fs = require('fs');
-            const path = require('path');
-            const packageJson = require.resolve('cn-font-split/package.json');
-            const distDir = path.join(path.dirname(packageJson), 'dist');
-            const extension = process.platform === 'win32' ? '.dll' : process.platform === 'darwin' ? '.dylib' : '.so';
-            const libraries = fs.readdirSync(distDir).filter((name) => name.startsWith('libffi') && name.endsWith(extension));
-            console.log('FFI libraries:', libraries.join(', ') || '(none)');
-            if (libraries.length === 0) {
-              console.error('cn-font-split native library is missing');
-              process.exit(1);
-            }
-          "
+          set -euo pipefail
+
+          # cn-font-split's postinstall resolves the release tag through ungh.cc,
+          # which is rate limited on shared CI runners. When that lookup fails the
+          # download silently 404s (the script masks errors), leaving no native
+          # library. Fetch the Linux asset directly from the "latest" release
+          # instead; GitHub serves this redirect without an API call.
+          dist_dir="$(node -p "require('path').dirname(require.resolve('cn-font-split/package.json')) + '/dist'")"
+          lib="libffi-x86_64-unknown-linux-gnu.so"
+          url="https://github.com/KonghaYao/cn-font-split/releases/latest/download/${lib}"
+
+          echo "Downloading ${lib} from ${url}"
+          rm -f "${dist_dir:?}/${lib}"
+          curl --fail --silent --show-error --location \
+            --retry 5 --retry-all-errors --retry-delay 3 --max-time 300 \
+            -o "${dist_dir}/${lib}" "${url}"
+
+          if [ ! -s "${dist_dir}/${lib}" ]; then
+            echo "::error::cn-font-split native library is missing or empty"
+            exit 1
+          fi
+
+          ls -lh "${dist_dir}/${lib}"
+          # Loading the package dlopens the library, so this verifies both its
+          # presence and that it is loadable on this runner.
+          node -e "import('cn-font-split').then(() => console.log('cn-font-split native library loaded')).catch((error) => { console.error(error); process.exit(1); })"
 
       - name: Run tests
         run: pnpm test
